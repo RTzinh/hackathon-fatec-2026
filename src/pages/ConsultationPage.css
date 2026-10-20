@@ -1,0 +1,27 @@
+.search-panel { margin-bottom: 14px; }
+.search-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; padding: 16px 18px; }
+.search-filters label, .deposit-fields label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 600; }
+.search-filters input, .search-filters select, .deposit-fields input, .deposit-fields select { width: 100%; min-height: 38px; padding: 7px 10px; border: 1px solid var(--line-strong); border-radius: 5px; color: var(--ink); background: #fff; font-size: 11px; }
+.clear-filters { align-self: end; justify-self: start; min-height: 38px; }
+.consultation-results { overflow: hidden; }
+.consultation-results table, .table-panel table { width: 100%; border-collapse: collapse; text-align: left; }
+.table-panel th { padding: 10px 12px; color: var(--quiet); background: #f8f8f5; font-size: 9px; font-weight: 650; white-space: nowrap; }
+.table-panel td { padding: 12px; border-top: 1px solid #eceeeb; color: var(--ink); font-size: 10px; vertical-align: top; }
+.table-panel td strong { font-weight: 620; }
+.table-panel td small { display: block; margin-top: 4px; color: var(--quiet); font-size: 9px; }
+.table-scroll { overflow-x: auto; }
+.table-note { display: flex; align-items: flex-start; gap: 6px; margin: 0; padding: 11px 15px; color: var(--quiet); font-size: 9px; line-height: 1.5; }
+.table-note svg { flex: 0 0 auto; }
+.coordination-summary { margin-bottom: 14px; }
+.coordination-summary .summary-item { min-height: 87px; grid-template-columns: 1fr; grid-template-rows: 20px 30px 17px; }
+.coordination-summary .summary-item + .summary-item { border-top: 0; border-left: 1px solid var(--line); }
+.coordination-summary .summary-item > strong { font-size: 22px; }
+.deposit-form { margin-top: 14px; }
+.deposit-fields { display: grid; grid-template-columns: 1.4fr 1.2fr 1fr; align-items: end; gap: 13px; padding: 16px 18px 10px; }
+.deposit-fields .button { min-height: 38px; }
+.deposit-file { grid-column: 1 / -1; }
+.registered-label { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-size: 10px; font-weight: 650; }
+.inline-link { display: inline-flex; align-items: center; gap: 4px; color: var(--red); font-size: 9px; }
+.inline-link:hover { text-decoration: underline; }
+@media (max-width: 980px) { .search-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .deposit-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .search-filters, .deposit-fields { grid-template-columns: 1fr; padding-inline: 13px; } .deposit-file { grid-column: auto; } .coordination-summary .summary-item { padding-inline: 10px; } }

@@ -1,0 +1,51 @@
+:root {
+  font-family: 'IBM Plex Sans Variable', 'Segoe UI', sans-serif;
+  color: #18242c;
+  background: #f3f2ef;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  --ink: #18242c;
+  --muted: #58666e;
+  --quiet: #75818a;
+  --paper: #f3f2ef;
+  --surface: #fff;
+  --line: #e1e2df;
+  --line-strong: #cfd3d1;
+  --navy: #142b3a;
+  --navy-soft: #1c3a4a;
+  --red: #9e3038;
+  --red-soft: #f8e9e8;
+  --amber: #8c5a17;
+  --amber-soft: #f6efdf;
+  --blue: #355e79;
+  --blue-soft: #eaf0f4;
+  --green: #32664d;
+  --green-soft: #e8f1eb;
+  --shadow-soft: 0 8px 24px rgb(20 43 58 / 5%);
+  font-size: 15px;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--paper); }
+button, input, select, textarea { font: inherit; }
+button { color: inherit; }
+button:disabled { cursor: not-allowed; opacity: .55; }
+::selection { color: #fff; background: #7d2831; }
+:focus-visible { outline: 3px solid #b8474c; outline-offset: 3px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #ecebe7; }
+::-webkit-scrollbar-thumb { background: #adb5b4; border: 2px solid #ecebe7; border-radius: 8px; }
+
+#root { min-height: 100vh; }
+h1, h2, h3, p { margin-top: 0; }
+button { border: 0; background: none; cursor: pointer; }
+a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
