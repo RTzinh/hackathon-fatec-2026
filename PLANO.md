@@ -12,7 +12,7 @@ Demonstrar, com cenário fictício compartilhado, o fluxo da agenda da banca ao 
 | 2. Agendamento e convite | Feito | Cadastro de banca, avaliadores, caixa de saída simulada, resposta por token, expiração, recusa e substituição; detector de conflito e sugestões por disponibilidade |
 | 3. Pós-banca | Feito | Ata e RIC-CPS, ajuste documental, checklist, tarefas, prazo +15 dias, versões independentes e aprovação por versão |
 | 4. Consulta e coordenação | Feito | Filtros combinados com metadados acadêmicos; pendências; encaminhamento local; depósito por link ou comprovante |
-| 5. Diferenciais e entrega | Feito | Build passou; cinco testes de regras passaram; preview Vercel READY e HTTP 200; pendente commit/push |
+| 5. Diferenciais e entrega | Feito | Build passou; cinco testes de regras passaram; preview Vercel READY e HTTP 200; branch enviada ao GitHub |
 
 ## Arquitetura
 
