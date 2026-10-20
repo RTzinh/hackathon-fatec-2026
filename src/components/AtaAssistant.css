@@ -1,0 +1,46 @@
+.ata-ai { display: grid; gap: 12px; }
+.ata-ai__toggle { justify-self: start; }
+.ata-ai__panel { padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: #fbfbf9; }
+.ata-ai__intro { display: grid; gap: 3px; }
+.ata-ai__intro strong { color: var(--ink); font-size: 14px; font-weight: 650; }
+.ata-ai__field { display: grid; gap: 6px; }
+.ata-ai__field label, .ata-ai__label { color: #3b4c54; font-size: 13px; font-weight: 600; }
+.ata-ai__field textarea { width: 100%; min-height: 140px; padding: 9px 10px; border: 1px solid var(--line-strong); border-radius: 6px; color: var(--ink); background: #fff; font-size: 14px; font-weight: 400; line-height: 1.5; resize: vertical; }
+.ata-ai__field textarea[aria-invalid='true'] { border-color: #a1373b; }
+.ata-ai__field textarea:disabled { background: #f4f4f1; }
+.ata-ai__meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; }
+.ata-ai__count { color: var(--quiet); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ata-ai__count--over { color: #922f36; font-weight: 650; }
+.ata-ai__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.ata-ai__actions--start { justify-content: flex-start; padding-top: 4px; }
+.ata-ai__spinner { animation: ata-ai-spin 900ms linear infinite; }
+@keyframes ata-ai-spin { to { transform: rotate(360deg); } }
+
+.ata-ai__result { display: grid; gap: 14px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.ata-ai__result-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.ata-ai__badge { display: inline-flex; align-items: center; gap: 6px; color: #77518b; font-size: 13px; font-weight: 650; }
+.ata-ai .ata-ai__confidence--alta { color: #2f6348; background: #e7f0ea; }
+.ata-ai .ata-ai__confidence--media { color: #8a5a16; background: #f7efdd; }
+.ata-ai .ata-ai__confidence--baixa { color: #922f36; background: #f8e8e7; }
+.ata-ai__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 18px; margin: 0; }
+.ata-ai__fields > div { display: grid; gap: 2px; padding: 8px 0; border-bottom: 1px solid #f0f1ef; }
+.ata-ai__fields dt { color: var(--quiet); font-size: 11px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; }
+.ata-ai__fields dd { margin: 0; color: var(--ink); font-size: 14px; overflow-wrap: anywhere; }
+.ata-ai__fields em { color: var(--quiet); font-style: normal; }
+.ata-ai__divergences { display: grid; gap: 6px; padding: 10px 12px; border: 1px solid #e8d5b6; border-radius: 7px; color: #76521b; background: #fbf6e9; font-size: 13px; line-height: 1.45; }
+.ata-ai__divergences strong { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; }
+.ata-ai__divergences ul { margin: 0; padding-left: 20px; }
+.ata-ai__match { color: var(--green); }
+.ata-ai__corrections { display: grid; gap: 6px; }
+.ata-ai__corrections ol { display: grid; gap: 8px; margin: 0; padding-left: 20px; }
+.ata-ai__corrections li { padding-left: 2px; }
+.ata-ai__corrections li strong { display: block; color: var(--ink); font-size: 14px; font-weight: 600; }
+.ata-ai__corrections li span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.ata-ai__done { color: var(--green); font-weight: 600; }
+
+@media (max-width: 620px) {
+  .ata-ai__panel { padding: 12px; }
+  .ata-ai__fields { grid-template-columns: 1fr; }
+  .ata-ai__actions { justify-content: stretch; }
+  .ata-ai__actions .button { flex: 1 1 auto; }
+}

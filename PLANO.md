@@ -14,6 +14,7 @@ Demonstrar, com cenário fictício compartilhado, o fluxo da agenda da banca ao 
 | 4. Consulta e coordenação | Feito | Filtros combinados com metadados acadêmicos; pendências da coordenação (o registro do depósito passou ao bibliotecário no incremento 6) |
 | 5. Diferenciais e entrega | Feito | Build passou; cinco testes de regras passaram; preview Vercel READY e HTTP 200; pitch escrito em `PITCH.md`; branch enviada ao GitHub (verificação anterior ao incremento 6) |
 | 6. Aderência à Portaria 4069/2024 | Feito | Perfil Bibliotecário e tela "Fila da biblioteca" (`LibraryPage`); pós-banca em quatro etapas (ata conferida, aval, TA, pacote à biblioteca) com validação automática do TA; painel da coordenação com prazo de correção, prazo da biblioteca e assinatura do coordenador; "Registrar realização" na agenda; nome de arquivo exigido na tela do aluno; leitura local de PDF e PDF/A no `FilePicker`; página "Modelo do processo"; visão geral calculada do estado; rótulos de status e coluna RIC-CPS na consulta; amostras em `public/amostras/` (`scripts/gerar-amostras.mjs`); 10 testes de regra passam; fluxo completo percorrido em Chrome headless, inclusive a 390 px sem rolagem horizontal |
+| 7. IA real (OpenRouter) | Feito | "Ler ata com IA" na etapa da ata: o servidor chama `anthropic/claude-haiku-5.5` pela OpenRouter (chave só no servidor), valida a resposta e devolve nota, indicação, data, banca, correções e divergências com o cadastro; o orientador confere antes de aplicar e as tarefas criadas aguardam revisão; `npm run test:ai` cobre a validação da resposta, sem rede; detalhes no README |
 
 ## Arquitetura
 
@@ -30,7 +31,7 @@ public/amostras/  PDFs de amostra, gerados por scripts/gerar-amostras.mjs
 scripts/          rules.test.mjs (testes de regra) e gerar-amostras.mjs
 ```
 
-Persistência tem adapter de navegador. O MVP não tem API, banco institucional, autenticação, integração de e-mail, RIC-CPS nem chamada de IA.
+Persistência tem adapter de navegador. O MVP não tem banco institucional, autenticação real, integração de e-mail nem RIC-CPS. A única chamada externa é a IA (OpenRouter), feita só pelo servidor (`server/ata-assistant.ts`, exposto por `api/ata-assistant.ts` e pelo middleware do Vite); as sugestões de correção do cenário inicial continuam sendo exemplos fixos.
 
 O `FilePicker` lê os bytes do arquivo no navegador (arquivos até 24 MB inteiros; acima disso, 4 MB do início e 4 MB do fim) para detectar o cabeçalho `%PDF` e `pdfaid:part`. Nenhum byte sai da máquina e só o resultado (`PdfInspection`) persiste. A detecção é heurística e não substitui o veraPDF.
 
@@ -115,4 +116,4 @@ Pendentes de resposta da coordenação ou da unidade (seção 5 da pesquisa):
 
 ## Fora do MVP
 
-Autenticação real, banco/API, e-mail, armazenamento binário, verificação de assinatura, validação completa de PDF/A (veraPDF), integração RIC-CPS, geração de conteúdo por modelo de IA, publicação institucional e regras oficiais de banca/nota. Adicionar só após validação com responsáveis institucionais.
+Autenticação real, banco/API, e-mail, armazenamento binário, verificação de assinatura, validação completa de PDF/A (veraPDF), integração RIC-CPS, IA que decide ou aprova (a IA só sugere, com revisão humana), publicação institucional e regras oficiais de banca/nota. Adicionar só após validação com responsáveis institucionais.
