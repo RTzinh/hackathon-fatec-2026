@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { FileText, Upload } from 'lucide-react'
 import { inspectPdfBytes } from '../domain/rules'
 import type { PdfInspection, StoredFile } from '../domain/types'
+import './FilePicker.css'
 
 const FULL_READ_LIMIT = 24 * 1_048_576
 const EDGE_READ = 4 * 1_048_576
@@ -23,6 +24,7 @@ async function inspectFile(file: File): Promise<PdfInspection | undefined> {
 export function FilePicker({ label, accept = '.pdf,.pdfa,application/pdf', file, onSelect }: { label: string; accept?: string; file?: StoredFile; onSelect: (file: StoredFile) => void }) {
   const id = useId()
   return <div className="file-picker">
+    {file && <div className="file-meta"><span className="file-meta__icon"><FileText size={16} /></span><div><strong>{file.name}</strong><span>{formatSize(file.size)}{file.inspection && ` · ${file.inspection.pdfaPart ? `PDF/A-${file.inspection.pdfaPart}` : file.inspection.isPdf ? 'PDF sem PDF/A' : 'não é PDF'}`}</span></div></div>}
     <input id={id} type="file" accept={accept} onChange={async (event) => {
       const input = event.currentTarget
       const selected = input.files?.[0]
@@ -32,9 +34,6 @@ export function FilePicker({ label, accept = '.pdf,.pdfa,application/pdf', file,
       input.value = ''
     }} />
     <label htmlFor={id} className="file-picker__button"><Upload size={15} /> {label}</label>
-    {file ? <div className="file-meta"><span className="file-meta__icon"><FileText size={16} /></span><div><strong>{file.name}</strong><span>{file.type} · {formatSize(file.size)}{file.inspection && ` · ${file.inspection.pdfaPart ? `PDF/A-${file.inspection.pdfaPart} declarado` : file.inspection.isPdf ? 'PDF sem declaração PDF/A' : 'não é PDF'}`}</span></div><span className="file-meta__state">Metadados salvos</span></div>
-      : <p className="file-picker__empty">Nenhum arquivo selecionado.</p>}
-    <p className="file-picker__note">O conteúdo é lido só neste navegador para checar formato; persistem nome, tipo, tamanho e resultado da checagem. Nenhum arquivo é enviado a um servidor.</p>
   </div>
 }
 

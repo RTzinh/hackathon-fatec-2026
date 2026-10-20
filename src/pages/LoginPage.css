@@ -1,0 +1,35 @@
+/* Tela de entrada de demonstração: uma folha sobre a mesa, só com os tokens de index.css. */
+.login { display: grid; min-height: 100vh; place-items: center; padding: 32px 16px; background: var(--ground); }
+.login__card { width: min(440px, 100%); padding: 32px 32px 24px; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); box-shadow: var(--shadow-soft); }
+.login__brand { display: grid; justify-items: start; gap: 6px; margin-bottom: 24px; }
+.login__brand p { margin: 0; color: var(--muted); font-size: var(--fs-small); }
+.login__logo { width: auto; max-width: 180px; height: 44px; object-fit: contain; }
+.login__wordmark { color: var(--mark); font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+.login h1 { margin-bottom: 16px; color: var(--ink); font-size: var(--fs-title); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; }
+
+.login__form { display: grid; gap: 14px; }
+.login__submit { width: 100%; margin-top: 2px; }
+.login__error { margin: 0; color: var(--st-error); font-size: var(--fs-small); font-weight: 600; }
+
+.login__accounts { margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.login__accounts h2 { margin-bottom: 10px; color: var(--quiet); font-size: var(--fs-meta); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.login__accounts ul { display: grid; gap: 6px; margin: 0 0 12px; padding: 0; list-style: none; }
+.login__account { display: flex; width: 100%; align-items: center; gap: 12px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-control); text-align: left; background: var(--surface); transition: background 150ms ease, border-color 150ms ease; }
+.login__account:hover { border-color: var(--control); background: var(--hover); }
+.login__avatar { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border-radius: 50%; color: var(--action); background: var(--action-soft); font-size: var(--fs-small); font-weight: 700; }
+.login__account-text { display: grid; min-width: 0; flex: 1; }
+.login__account-text strong { color: var(--ink); font-size: var(--fs-item); font-weight: 600; line-height: 1.3; }
+.login__account-text small { overflow: hidden; color: var(--muted); font-size: var(--fs-meta); text-overflow: ellipsis; white-space: nowrap; }
+.login__account-arrow { flex: 0 0 auto; color: var(--quiet); }
+.login__open-all { width: 100%; }
+.login__hint { margin: 10px 0 0; color: var(--st-warn); font-size: var(--fs-small); }
+
+.login__create { margin: 18px 0 0; color: var(--muted); font-size: var(--fs-small); text-align: center; }
+.login__link { padding: 0; color: var(--action); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.login__link:hover { color: var(--action-hover); }
+.login__note { margin: 20px 0 0; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--quiet); font-size: var(--fs-meta); text-align: center; }
+
+@media (max-width: 480px) {
+  .login { align-items: start; padding: 16px; }
+  .login__card { padding: 24px 20px 20px; }
+}

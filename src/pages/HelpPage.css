@@ -1,0 +1,43 @@
+/* Como usar: só reaproveita .panel, .panel-heading, .button, .text-button e .status; aqui ficam o ritmo e as listas. */
+.help-stack { display: grid; max-width: 980px; gap: var(--gap, 16px); }
+.help-stack .panel-heading { padding-bottom: 8px; }
+.help-tour__head { flex-wrap: wrap; }
+
+.help-tips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 4px var(--pad, 20px) 18px; list-style: none; }
+.help-tips li { display: grid; gap: 2px; align-content: start; }
+.help-tips strong { color: var(--ink); font-size: 14px; font-weight: 650; }
+.help-tips span { color: var(--muted); font-size: 14px; line-height: 1.45; }
+
+.help-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.help-flow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 4px var(--pad, 20px) 16px; list-style: none; }
+.help-flow__item { display: flex; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sheet, 10px); background: var(--surface); }
+.help-flow__item--current { border-color: var(--action); background: var(--action-soft); }
+.help-flow__num, .help-demo__num { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border-radius: 50%; color: var(--muted); background: var(--rule); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.help-flow__item--current .help-flow__num { color: #fff; background: var(--action); }
+.help-flow__item strong { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--ink); font-size: 15px; font-weight: 650; }
+.help-flow__item p { margin: 4px 0 10px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.help-flow__here { color: var(--action); background: var(--surface); font-size: 12px; }
+
+.help-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 12px var(--pad, 20px); border-top: 1px solid var(--rule); color: var(--quiet); font-size: 13px; }
+.help-status ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.help-status .text-button { margin-left: auto; }
+
+.help-demo { display: grid; gap: 0; margin: 0; padding: 0 var(--pad, 20px) 8px; list-style: none; }
+.help-demo > li { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--rule); }
+.help-demo > li:first-child { border-top: 0; }
+.help-demo p { margin: 6px 0 0; color: var(--ink); font-size: 14px; line-height: 1.5; }
+.help-demo ul { display: grid; gap: 4px; margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.help-demo__num--check { color: var(--st-ok); background: var(--st-ok-bg); }
+
+.help-glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; margin: 0; padding: 4px var(--pad, 20px) 18px; }
+.help-glossary dt { color: var(--ink); font-size: 14px; font-weight: 700; }
+.help-glossary dd { margin: 2px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .help-tips, .help-flow, .help-glossary { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .help-status .text-button { margin-left: 0; }
+  .help-tour__head .button { width: 100%; }
+}

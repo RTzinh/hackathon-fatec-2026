@@ -1,0 +1,20 @@
+/* Troca de perfil: trilho na cor da capa; o perfil ativo é a folha branca puxada à frente (mesma linguagem do menu). */
+.profile-tabs { display: flex; min-width: 0; align-items: center; gap: 10px; }
+.profile-tabs__label { color: var(--quiet); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.profile-tabs__group { display: flex; gap: 2px; padding: 3px; border-radius: 9px; background: var(--shell); }
+.profile-tabs__item { display: inline-flex; min-height: 34px; align-items: center; gap: 7px; padding: 0 12px; border-radius: 7px; color: var(--muted); font-size: 14px; font-weight: 600; white-space: nowrap; transition: background 150ms ease, color 150ms ease; }
+.profile-tabs__item svg { flex: 0 0 auto; color: var(--quiet); }
+.profile-tabs__item:hover { color: var(--ink); background: rgb(255 255 255 / 55%); }
+.profile-tabs__item:focus-visible { outline-offset: 0; }
+.profile-tabs__item[aria-pressed='true'], .profile-tabs__item[aria-pressed='true']:hover { color: var(--ink); background: var(--surface); box-shadow: 0 0 0 1px var(--border); }
+.profile-tabs__item[aria-pressed='true'] svg { color: var(--ink); }
+.profile-tabs__select { display: none; }
+
+@media (max-width: 1100px) {
+  .profile-tabs__label { display: none; }
+  .profile-tabs__item { padding: 0 10px; }
+}
+@media (max-width: 860px) {
+  .profile-tabs__group { display: none; }
+  .profile-tabs__select { display: block; max-width: 52vw; min-height: 40px; padding: 0 10px; border: 1px solid var(--control); border-radius: var(--radius-control); color: var(--ink); background: var(--surface); font-size: 14px; font-weight: 600; }
+}

@@ -51,7 +51,7 @@ export function ProcessModelPage() {
         <ArrowRight className="dataflow__arrow" aria-hidden="true" />
         <div className="dataflow__col"><h3>Persistência</h3><span>localStorage (demonstração)</span><span className="dataflow__future">API + banco institucional</span><span className="dataflow__future">Armazenamento de arquivos</span><span className="dataflow__future">E-mail institucional com token</span></div>
       </div>
-      <p className="model-note">Itens tracejados não fazem parte do protótipo. Não existe API conhecida do RIC-CPS; o depósito continua manual pelo bibliotecário.</p>
+      <p className="model-note">Itens marcados com + não fazem parte do protótipo. Não existe API conhecida do RIC-CPS; o depósito continua manual pelo bibliotecário.</p>
     </section>
     <section className="panel model-panel"><div className="panel-heading"><div><h2>Regras do CPS automatizadas</h2><p>Validações determinísticas; a IA fica só em sugestões revisadas por humano.</p></div></div>
       <div className="table-scroll"><table className="rules-table"><thead><tr><th>Regra</th><th>Como o sistema aplica</th><th>Fonte</th></tr></thead><tbody>{rules.map(([rule, how, source]) => <tr key={rule}><td><strong>{rule}</strong></td><td>{how}</td><td>{source}</td></tr>)}</tbody></table></div>

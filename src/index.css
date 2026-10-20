@@ -1,50 +1,106 @@
+@import '@fontsource-variable/public-sans';
+
+/*
+  Integrae · mundo "pasta de processo"
+  Cada TCC é um processo da secretaria: uma pasta cujos documentos são tomados em ordem
+  e assinados em caneta azul. A cor tem função: azul só no que se preenche, assina ou clica;
+  cinco pares de status; o resto é tinta e papel.
+*/
 :root {
-  font-family: 'IBM Plex Sans Variable', 'Segoe UI', sans-serif;
-  color: #18242c;
-  background: #f3f2ef;
+  font-family: 'Public Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--ground);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
-  font-weight: 400;
-  --ink: #18242c;
-  --muted: #58666e;
-  --quiet: #75818a;
-  --paper: #f3f2ef;
-  --surface: #fff;
-  --line: #e1e2df;
-  --line-strong: #cfd3d1;
-  --navy: #142b3a;
-  --navy-soft: #1c3a4a;
-  --red: #9e3038;
-  --red-soft: #f8e9e8;
-  --amber: #8c5a17;
-  --amber-soft: #f6efdf;
-  --blue: #355e79;
-  --blue-soft: #eaf0f4;
-  --green: #32664d;
-  --green-soft: #e8f1eb;
-  --shadow-soft: 0 8px 24px rgb(20 43 58 / 5%);
-  font-size: 15px;
+
+  /* Papel e pasta */
+  --ground: #f4f6f5;        /* mesa: fundo da página */
+  --shell: #e8eeeb;         /* capa da pasta: menu lateral */
+  --surface: #ffffff;       /* folha */
+  --raised: #f7f9f8;        /* poço dentro de uma folha */
+  --hover: #f1f4f2;
+  --border: #dde3e0;        /* borda de folha, ~1.3:1 */
+  --rule: #ebefed;          /* regra entre linhas */
+  --control: #85908a;       /* borda de campo, 3.3:1 */
+
+  /* Tinta */
+  --ink: #161c1a;           /* 17:1, tinta levemente esverdeada */
+  --muted: #4a5751;         /* 7.6:1, texto secundário */
+  --quiet: #5f6b65;         /* 5.6:1 no branco, 4.7:1 na capa */
+
+  /* Caneta azul: a única cor de ação */
+  --action: #1f4bb0;
+  --action-hover: #183c8f;
+  --action-soft: #e8eefb;
+  --mark: #111513;          /* tinta da logo: preto quase puro */
+
+  /* Status: tinta escura sobre tom claro do mesmo matiz (todos acima de 6:1) */
+  --st-neutral: #3b4a5a;  --st-neutral-bg: #e9edf1;
+  --st-info: #0e5a63;     --st-info-bg: #dff0f0;
+  --st-warn: #7a4a06;     --st-warn-bg: #fbefd6;   --st-warn-line: #ecd29c;
+  --st-ok: #1d5e3a;       --st-ok-bg: #dcf1e3;     --st-ok-line: #b9dcc5;
+  --st-error: #9a2a2a;    --st-error-bg: #fbe5e3;  --st-error-line: #efc3be;
+
+  /* Nomes antigos, mantidos para telas de outros agentes (AtaAssistant, Ajuda) */
+  --paper: var(--ground);
+  --line: var(--border);
+  --line-strong: var(--control);
+  --navy: var(--ink);
+  --navy-soft: var(--muted);
+  --red: var(--action);
+  --red-soft: var(--action-soft);
+  --amber: var(--st-warn);   --amber-soft: var(--st-warn-bg);
+  --blue: var(--st-info);    --blue-soft: var(--st-info-bg);
+  --green: var(--st-ok);     --green-soft: var(--st-ok-bg);
+
+  /* Forma */
+  --radius-sheet: 10px;
+  --radius-control: 6px;
+  --radius-chip: 999px;
+  --control-h: 38px;
+  --control-h-sm: 32px;
+  --gap: 16px;
+  --pad: 20px;
+  --shadow-float: 0 10px 28px rgb(20 33 28 / 14%), 0 2px 6px rgb(20 33 28 / 8%);
+  --shadow-soft: var(--shadow-float);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+
+  /* Escala tipográfica fixa (razão ~1.15) */
+  --fs-title: 26px;
+  --fs-section: 17px;
+  --fs-item: 15px;
+  --fs-body: 15px;
+  --fs-small: 13px;
+  --fs-meta: 12px;
 }
 
 * { box-sizing: border-box; }
 html { min-width: 320px; scroll-behavior: smooth; }
-body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--paper); }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--ground); }
 button, input, select, textarea { font: inherit; }
 button { color: inherit; }
-button:disabled { cursor: not-allowed; opacity: .55; }
-::selection { color: #fff; background: #7d2831; }
-:focus-visible { outline: 3px solid #b8474c; outline-offset: 3px; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+::selection { color: #fff; background: var(--action); }
+:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+input, select, textarea { accent-color: var(--action); caret-color: var(--action); }
+::placeholder { color: var(--quiet); opacity: 1; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #ecebe7; }
-::-webkit-scrollbar-thumb { background: #adb5b4; border: 2px solid #ecebe7; border-radius: 8px; }
+::-webkit-scrollbar-track { background: var(--ground); }
+::-webkit-scrollbar-thumb { background: #b6c0bb; border: 2px solid var(--ground); border-radius: 8px; }
+code, kbd { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: .9em; }
 
 #root { min-height: 100vh; }
 h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
 button { border: 0; background: none; cursor: pointer; }
-a { color: inherit; }
+a { color: inherit; text-underline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "api/ata-assistant.ts": { "maxDuration": 30 },
+    "api/compliance-review.ts": { "maxDuration": 30 }
+  }
+}

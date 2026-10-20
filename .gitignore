@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# cache de trabalho da skill impeccable
+.impeccable/

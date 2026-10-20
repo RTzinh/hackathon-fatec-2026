@@ -1,0 +1,109 @@
+/* Tour guiado: convite discreto, recorte sobre o alvo e balão. Usa as cores e botões do app. */
+
+.tour-root { position: fixed; z-index: 60; inset: 0; }
+
+/* O recorte é o próprio alvo: a sombra gigante escurece o resto da tela. */
+.tour-spot {
+  position: fixed;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px var(--surface, #fff), 0 0 0 9999px rgb(20 33 28 / 56%);
+  transition: left 240ms var(--ease, ease), top 240ms var(--ease, ease), width 240ms var(--ease, ease), height 240ms var(--ease, ease), border-radius 240ms var(--ease, ease);
+}
+.tour-spot--none { border-radius: 0; background: rgb(20 33 28 / 56%); box-shadow: none; }
+
+.tour-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(360px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  max-height: calc(100dvh - 24px);
+}
+.tour-dialog:focus { outline: none; }
+.tour-dialog--pending { visibility: hidden; }
+.tour-card {
+  display: grid;
+  max-height: inherit;
+  gap: 14px;
+  padding: 16px 18px 14px;
+  overflow-y: auto;
+  border: 1px solid var(--border, #dde3e0);
+  border-radius: var(--radius-sheet, 10px);
+  background: var(--surface, #fff);
+  box-shadow: var(--shadow-float, 0 10px 28px rgb(20 33 28 / 14%));
+}
+
+.tour-copy { display: grid; gap: 8px; animation: tour-in 200ms var(--ease, ease) both; }
+.tour-progress { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tour-eyebrow { margin: 0; color: var(--quiet, #5f6b65); font-size: 12px; font-weight: 650; letter-spacing: .02em; }
+.tour-dots { display: flex; gap: 5px; }
+.tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border, #dde3e0); }
+.tour-dot--done { background: var(--control, #85908a); }
+.tour-dot--active { width: 16px; border-radius: 3px; background: var(--action, #1f4bb0); }
+.tour-title { margin: 0; color: var(--ink, #14211c); font-size: 16px; font-weight: 680; line-height: 1.3; letter-spacing: -.01em; }
+.tour-body { margin: 0; color: var(--muted, #4a5751); font-size: 14px; line-height: 1.5; }
+.tour-note { margin: 0; padding: 8px 10px; border-radius: var(--radius-control, 6px); color: var(--st-warn, #7a4a06); background: var(--st-warn-bg, #fbefd6); font-size: 13px; line-height: 1.45; }
+
+/* Aviso desenhado só para explicar o Desfazer quando não há aviso real na tela. */
+.tour-specimen { position: relative; display: flex; align-items: center; gap: 10px; margin-top: 4px; padding: 14px 10px 10px 12px; border: 1px dashed var(--control, #85908a); border-radius: var(--radius-sheet, 10px); color: var(--ink, #14211c); background: var(--raised, #f7f9f8); font-size: 13px; }
+.tour-specimen__tag { position: absolute; top: -9px; left: 10px; padding: 0 6px; border-radius: 4px; color: var(--quiet, #5f6b65); background: var(--surface, #fff); font-size: 11px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.tour-specimen__icon { flex: 0 0 auto; color: var(--st-ok, #1d5e3a); }
+.tour-specimen__text { flex: 1; min-width: 0; }
+.tour-specimen__undo { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 5px; padding: 6px 10px; border-radius: var(--radius-control, 6px); color: var(--action, #1f4bb0); background: var(--action-soft, #e8eefb); font-size: 13px; font-weight: 650; }
+.tour-specimen__close { flex: 0 0 auto; color: var(--quiet, #5f6b65); }
+
+.tour-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; border-top: 1px solid var(--rule, #ebefed); }
+.tour-skip { min-height: 34px; }
+.tour-nav { display: flex; gap: 8px; margin-left: auto; }
+
+/* Seta apontando para o alvo; `--tour-arrow` é a posição ao longo da borda. */
+.tour-arrow { position: absolute; width: 12px; height: 12px; border: 0 solid var(--border, #dde3e0); background: var(--surface, #fff); transform: rotate(45deg); }
+.tour-arrow--bottom { top: -7px; left: calc(var(--tour-arrow, 24px) - 6px); border-width: 1px 0 0 1px; }
+.tour-arrow--top { bottom: -7px; left: calc(var(--tour-arrow, 24px) - 6px); border-width: 0 1px 1px 0; }
+.tour-arrow--right { left: -7px; top: calc(var(--tour-arrow, 24px) - 6px); border-width: 0 0 1px 1px; }
+.tour-arrow--left { right: -7px; top: calc(var(--tour-arrow, 24px) - 6px); border-width: 1px 1px 0 0; }
+
+.tour-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Convite: um cartão pequeno no canto, que não cobre o conteúdo nem pede resposta. */
+.tour-offer {
+  position: fixed;
+  z-index: 40;
+  bottom: 24px;
+  left: 272px;
+  display: grid;
+  width: min(380px, calc(100vw - 48px));
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--border, #dde3e0);
+  border-radius: var(--radius-sheet, 10px);
+  background: var(--surface, #fff);
+  box-shadow: var(--shadow-float, 0 10px 28px rgb(20 33 28 / 14%));
+  animation: tour-in 240ms var(--ease, ease) 500ms both;
+}
+.tour-offer__icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 8px; color: var(--action, #1f4bb0); background: var(--action-soft, #e8eefb); }
+.tour-offer__text { display: grid; min-width: 0; gap: 1px; }
+.tour-offer__text strong { color: var(--ink, #14211c); font-size: 14px; font-weight: 650; }
+.tour-offer__text span { color: var(--muted, #4a5751); font-size: 13px; }
+.tour-offer__actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+@keyframes tour-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 1200px) {
+  .tour-offer { left: 248px; }
+}
+@media (max-width: 700px) {
+  .tour-offer { left: 12px; bottom: max(12px, env(safe-area-inset-bottom)); width: calc(100vw - 24px); }
+  /* O aviso do app fica no mesmo canto; o convite sobe para não ficar embaixo dele. */
+  body:has(.toast) .tour-offer { bottom: 96px; }
+  .tour-card { padding: 14px 16px 12px; }
+  .tour-actions .button, .tour-skip { min-height: 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot { transition: none; }
+  .tour-copy, .tour-offer { animation: none; }
+}
