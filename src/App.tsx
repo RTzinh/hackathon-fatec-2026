@@ -1,9 +1,9 @@
-﻿import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   AlertCircle, ArrowRight, BookOpenCheck, CalendarDays, CheckCircle2,
   ClipboardCheck, FileCheck2, FileText, GraduationCap, Info, LayoutDashboard, Library,
-  LogOut, Mail, Menu, Network, Plus, RotateCcw, Search, Send, Undo2, X,
+  CircleHelp, LogOut, Mail, Menu, Network, Plus, RotateCcw, Search, Send, Undo2, X,
 } from 'lucide-react'
 import { BrandImage } from './components/BrandImage'
 import { PageHeader } from './components/PageHeader'
@@ -21,11 +21,13 @@ import { ConsultationPage } from './pages/ConsultationPage'
 import { CoordinationPage } from './pages/CoordinationPage'
 import { LibraryPage } from './pages/LibraryPage'
 import { ProcessModelPage } from './pages/ProcessModelPage'
+import { HelpPage } from './pages/HelpPage'
+import { Tour } from './components/Tour'
 import { DEMO_STORAGE_KEY, loadDemoState, parseDemoState, resetDemoState, saveDemoState } from './repositories/demo-storage'
 import type { DemoState, ProfileRole, User } from './domain/types'
 import './App.css'
 
-export type View = 'overview' | 'schedule' | 'post-defense' | 'guest' | 'student' | 'consultation' | 'coordination' | 'library' | 'outbox' | 'model'
+export type View = 'overview' | 'schedule' | 'post-defense' | 'guest' | 'student' | 'consultation' | 'coordination' | 'library' | 'outbox' | 'model' | 'help'
 /** `undo: true` mostra "Desfazer", que restaura o estado anterior à última ação. */
 export type Toast = { kind: 'success' | 'error' | 'info'; message: string; undo?: boolean }
 export interface PageProps {
@@ -54,6 +56,7 @@ const PROFILE_KEY = 'sig-banca-profile'
 
 const homeView: Record<ProfileRole, View> = { orientador: 'overview', convidado: 'guest', aluno: 'student', coordenacao: 'coordination', bibliotecario: 'library', publico: 'consultation' }
 const modelView = { id: 'model' as const, label: 'Modelo do processo', icon: Network }
+const helpView = { id: 'help' as const, label: 'Como usar', icon: CircleHelp }
 const consultationView = { id: 'consultation' as const, label: 'Consulta pública', icon: Search }
 const roleViews: Record<ProfileRole, Array<{ id: View; label: string; icon: typeof CalendarDays }>> = {
   orientador: [
@@ -213,7 +216,7 @@ export default function App() {
   const currentProfile = profileOf(viewer)
   // Os quatro perfis fixos sempre aparecem; uma conta criada ou digitada no login entra como quinta aba.
   const tabProfiles: DemoProfile[] = profiles.some((profile) => profile.id === viewer.id) ? profiles : [...profiles, { ...currentProfile, label: viewer.name.split(' ')[0] }]
-  const pages = [...roleViews[currentProfile.role], consultationView, modelView]
+  const pages = [...roleViews[currentProfile.role], consultationView, modelView, helpView]
   const activePage = pages.find((item) => item.id === view) ?? pages[0]
   const props: PageProps = { state, setState, viewer, navigate, notify: setToast, focus }
   const navButton = ({ id, label, icon: Icon }: (typeof pages)[number]) => <button key={id} className={`nav-link ${view === id ? 'nav-link--active' : ''}`} onClick={() => navigate(id)} aria-current={view === id ? 'page' : undefined}><Icon size={18} strokeWidth={1.8} /><span>{label}</span>{id === 'outbox' && <span className="nav-count">{state.invitations.filter((invite) => invite.status === 'pendente').length}</span>}</button>
@@ -227,6 +230,7 @@ export default function App() {
         {roleViews[currentProfile.role].length > 0 && <div className="nav-divider" role="separator" />}
         {navButton(consultationView)}
         {navButton(modelView)}
+        {navButton(helpView)}
       </nav>
       <div className="sidebar-bottom">
         <p className="sidebar-note">Dados fictícios. Nada é enviado para fora deste navegador.</p>
@@ -252,9 +256,11 @@ export default function App() {
         {view === 'coordination' && <CoordinationPage {...props} />}
         {view === 'library' && <LibraryPage {...props} />}
         {view === 'model' && <ProcessModelPage />}
+        {view === 'help' && <HelpPage role={currentProfile.role} navigate={navigate} />}
         {view === 'outbox' && <OutboxPage state={state} navigate={navigate} />}
       </main>
     </div>
+    <Tour role={currentProfile.role} view={view} navigate={navigate} />
     {toast && <div className={`toast toast--${toast.kind}`} role={toast.kind === 'error' ? 'alert' : 'status'}>
       <span className="toast__icon">{toast.kind === 'success' ? <CheckCircle2 size={18} /> : toast.kind === 'error' ? <AlertCircle size={18} /> : <Info size={18} />}</span>
       <span className="toast__message">{toast.message}</span>

@@ -60,7 +60,8 @@ Um fluxo compartilhado mantém agenda, convites, documentos, correções, aprova
 - `SIG-Banca_pesquisa_e_validacao.md`: pesquisa e validação local, incluindo as regras da Portaria CEETEPS-GDS nº 4069/2024; registra limites de fontes e questões ainda abertas.
 - `SIG-Banca_proposta.md`: proposta de fluxo, explicitamente distinta de regra institucional.
 - Esses documentos ficam com a equipe, fora do repositório.
-- Não há API do RIC-CPS, serviço de e-mail, armazenamento de arquivos ou identidade visual oficial confirmados para esta demonstração.
+- Não há API do RIC-CPS, serviço de e-mail ou armazenamento de arquivos confirmados para esta demonstração.
+- Identidade: a logo do Integrae (corvo preto sobre um "i" e um arco, "integrae" em minúsculas, traço geométrico preto sobre branco) é compromisso de marca; a identidade CPS/Fatec oficial não foi fornecida, então a paleta do app é da equipe, não institucional. Decisões visuais ficam em DESIGN.md.
 
 ## Product Principles
 

@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "name": "Integrae: pasta de processo",
+    "description": "DNA de design do Integrae (gestão de bancas de TCC da Fatec Bauru) depois do redesenho: cada TCC é tratado como um processo da secretaria, com documentos tomados em ordem e assinados em caneta azul. Tela de trabalho (modo Operate), monocromática na identidade, com cor só em ação e status. Valores extraídos do código (src/index.css, src/App.css, src/pages/*.css), não de captura; o script de medição de cores não foi usado.",
+    "source_references": [
+      "src/index.css (tokens)",
+      "src/App.css (moldura, botões, painéis, status, aviso)",
+      "src/pages/PostDefensePage.css (abas de etapa)",
+      "src/components/ProfileTabs.css",
+      "DESIGN.md e .impeccable/design.json",
+      "Logo oficial: corvo preto sobre um 'i' e um arco, palavra 'integrae' em minúsculas"
+    ],
+    "created_at": "2026-10-20"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "monochromatic",
+      "primary": { "hex": "#1f4bb0", "role": "Caneta azul: a única cor de ação (botão primário, links, botões de texto, foco, filtro e aba selecionados)" },
+      "secondary": { "hex": "#e8eeeb", "role": "Capa da pasta: menu lateral, trilho dos seletores segmentados e abas inativas" },
+      "accent": { "hex": "#111513", "role": "Tinta da logo: marca e barras de andamento da trilha" },
+      "neutral": {
+        "scale": ["#ffffff", "#f7f9f8", "#f4f6f5", "#f1f4f2", "#ebefed", "#e8eeeb", "#dde3e0", "#85908a", "#5f6b65", "#4a5751", "#161c1a", "#111513"],
+        "usage": "Do mais claro ao mais escuro: folha, poço, mesa (fundo), hover, regra de linha, capa, borda de folha, borda de controle (3,3:1), texto discreto (5,6:1), texto secundário (7,6:1), tinta (17:1), tinta da logo. Todo texto fica acima de 4,5:1."
+      },
+      "semantic": {
+        "success": "#1d5e3a sobre #dcf1e3 (concluída, aceito, aprovado, registrado)",
+        "warning": "#7a4a06 sobre #fbefd6 (pendente, pendente de correção, ajustes solicitados, aberta)",
+        "error": "#9a2a2a sobre #fbe5e3 (recusado, expirado, atraso)",
+        "info": "#0e5a63 sobre #dff0f0 (realizada, enviada, encaminhado); neutro #3b4a5a sobre #e9edf1 (agendada, não encaminhado)"
+      },
+      "surface": { "background": "#f4f6f5", "card": "#ffffff", "elevated": "#ffffff" },
+      "contrast_strategy": "Escuro sobre claro, com camadas sutis: mesa, capa e folha separadas por um passo de tom e uma borda de 1px. Pares de status acima de 6:1; caneta azul 7,8:1 sobre branco."
+    },
+    "typography": {
+      "type_scale": {
+        "display": { "size": "30px", "weight": "620", "line_height": "1.1", "tracking": "-0.02em" },
+        "heading_1": { "size": "26px", "weight": "680", "line_height": "1.2", "tracking": "-0.02em" },
+        "heading_2": { "size": "17px", "weight": "650", "line_height": "1.3", "tracking": "-0.01em" },
+        "heading_3": { "size": "15px", "weight": "600", "line_height": "1.4", "tracking": "0" },
+        "body": { "size": "15px", "weight": "400", "line_height": "1.5", "tracking": "0" },
+        "body_small": { "size": "13px", "weight": "400", "line_height": "1.45", "tracking": "0" },
+        "caption": { "size": "12px", "weight": "400", "line_height": "1.4", "tracking": "0" },
+        "overline": { "size": "13px", "weight": "600", "line_height": "1.3", "tracking": "0 (sem caixa alta: rótulos em caixa normal)" }
+      },
+      "font_families": {
+        "heading": "Public Sans Variable (Fontsource @fontsource-variable/public-sans 5.3.0)",
+        "body": "Public Sans Variable, Segoe UI, system-ui, sans-serif",
+        "mono": "ui-monospace, Cascadia Mono, Consolas (só nomes de arquivo esperados, em <code>)"
+      },
+      "font_style_notes": "Grotesca neutra desenhada para interfaces de serviço público, uma família só. Algarismos tabulares confirmados no navegador. 'display' é a contagem da faixa de resumo, não um título de vitrine; o h1 de tela fica em 26px fixo."
+    },
+    "spacing": {
+      "base_unit": "4px",
+      "scale": ["4px", "8px", "12px", "16px", "20px", "24px", "28px", "40px", "56px"],
+      "content_density": "comfortable",
+      "section_rhythm": "Um espaço único de 16px entre blocos; 20px de recuo interno nas folhas; 28px entre o título da tela e o primeiro bloco; linhas de lista com 60px de passo."
+    },
+    "layout": {
+      "grid_system": "Menu lateral fixo + coluna de conteúdo fluida; dentro dela, grades de 2, 4 e 6 colunas iguais",
+      "max_content_width": "1320px (980px no pós-banca, 720px no convite)",
+      "columns": "4 na faixa de resumo, 2 na visão geral, 6 na trilha, 6 no formulário de cadastro",
+      "gutter": "16px",
+      "breakpoints": ["1200px", "980px", "860px", "760px", "700px", "620px", "390px (verificado)"],
+      "alignment_tendency": "strict grid"
+    },
+    "shape": {
+      "border_radius": { "small": "6px (controles)", "medium": "9px (abas de etapa, só no topo) e 8px (itens de menu)", "large": "10px (folhas)", "pill": "999px (status e filtros)" },
+      "border_usage": "subtle 1px",
+      "divider_style": "Borda #dde3e0 entre folhas e sob cabeçalhos de tabela; regra #ebefed entre linhas; tracejado só em estado vazio e etapa bloqueada."
+    },
+    "elevation": {
+      "shadow_style": "none",
+      "levels": { "low": "nenhuma (folha em repouso)", "medium": "anel de 1px #dde3e0 no item ativo do menu e no perfil ativo", "high": "0 10px 28px rgb(20 33 28 / 14%), 0 2px 6px rgb(20 33 28 / 8%) só no aviso flutuante e na gaveta do menu" },
+      "depth_cues": "color intensity (mesa, capa, folha)"
+    },
+    "iconography": {
+      "style": "outline",
+      "stroke_weight": "1.8px",
+      "size_scale": ["12px", "14px", "16px", "18px", "20px"],
+      "preferred_set": "lucide-react, sempre cinza e sem contêiner colorido"
+    },
+    "motion": {
+      "easing": "cubic-bezier(.2, .8, .2, 1)",
+      "duration_scale": { "micro": "150ms", "normal": "180ms", "macro": "220ms" },
+      "entrance_pattern": "Nenhuma entrada de página. Só o aviso sobe 6px com opacidade em 180ms.",
+      "exit_pattern": "Corte seco; a gaveta do menu desliza em 220ms.",
+      "philosophy": "minimal functional (respeita prefers-reduced-motion)"
+    },
+    "components": {
+      "button_style": "Primário em caneta azul sólida, 38px, 6px; secundário branco com borda de controle; botão de texto azul; perigo em contorno vermelho; desabilitado legível em cinza sem opacidade.",
+      "input_style": "Branco, borda #85908a de 1px, 38px, 6px; foco com borda e anel azul de 2px; rótulo acima, 14px/600.",
+      "card_style": "Folha branca, borda de 1px, 10px, sem sombra; cabeçalho sem divisória; nunca folha dentro de folha (usa-se o poço #f7f9f8).",
+      "navigation_pattern": "Menu lateral na cor da capa; item ativo é a folha branca puxada à frente; vira gaveta abaixo de 700px. Perfis em seletor segmentado no topo, select nativo abaixo de 860px.",
+      "modal_style": "Sem modais. Confirmações viram aviso com Desfazer.",
+      "list_style": "Linhas de 60px separadas por regra clara, título 15px/600 e meta 13px; ação com seta azul à direita.",
+      "component_notes": "Assinatura: as quatro etapas do pós-banca são abas de pasta que se unem à folha da etapa aberta (inativa na cor da capa, ativa branca com número azul, concluída com ✓ verde, bloqueada tracejada). Checagens de arquivo são texto com ✓/✕ coloridos, não pílulas."
+    }
+  },
+  "design_style": {
+    "aesthetic": {
+      "mood": ["sério", "calmo", "organizado", "acessível"],
+      "visual_metaphor": "A pasta de processo da secretaria acadêmica: abas, folhas e assinatura em caneta azul",
+      "era_influence": "Sistemas públicos digitais da década de 2020 (gov.uk, gov.br), sem nostalgia de papel",
+      "genre": "ferramenta institucional de trabalho",
+      "personality_traits": ["confiável", "direto", "meticuloso"],
+      "adjectives": ["monocromático", "plano", "tabular", "contido", "legível"]
+    },
+    "visual_language": {
+      "complexity": "minimal",
+      "ornamentation": "none",
+      "whitespace_usage": "Espaço colocado por grade e repetição (16px entre blocos, 20px dentro), nunca sobra.",
+      "visual_weight_distribution": "O título da tela e a ação primária em cima; contagens tabulares na faixa; o resto em peso uniforme.",
+      "focal_strategy": "distributed interest, com 'Para fazer agora' e o botão azul como pontos de entrada",
+      "contrast_level": "alto no texto, baixo nas superfícies",
+      "texture_usage": "nenhuma"
+    },
+    "composition": {
+      "hierarchy_method": "typographic hierarchy",
+      "balance_type": "symmetric",
+      "flow_direction": "de cima para baixo, da esquerda para a direita",
+      "grouping_strategy": "Folhas por tarefa; linhas com regra clara dentro das folhas; faixa dividida para contagens.",
+      "negative_space_role": "Separa tarefas; não decora."
+    },
+    "imagery": {
+      "photo_treatment": "nenhuma foto",
+      "illustration_style": "nenhuma ilustração",
+      "graphic_elements": "A logo do corvo e a marca em arco; barras de andamento finas na trilha",
+      "pattern_usage": "nenhum",
+      "image_shape": "não se aplica"
+    },
+    "interaction_feel": {
+      "feedback_style": "Aviso flutuante com Desfazer; mudança de tom no hover; seta da ação desliza 2px.",
+      "hover_behavior": "Tom de fundo #f1f4f2 em linhas e botões secundários; borda escurece até a tinta.",
+      "transition_personality": "snappy",
+      "loading_style": "Tela de carregamento com a marca; botões desabilitados em cinza legível.",
+      "microinteraction_density": "baixa"
+    },
+    "brand_voice_in_ui": {
+      "tone": "institucional e direto",
+      "formality": "média",
+      "cta_style": "direct imperative",
+      "empty_state_approach": "A folha mantém o cabeçalho; uma caixa tracejada diz o que falta e como fazer.",
+      "error_tone": "Diz o que falhou e o que fazer, sem desculpas, em vermelho só no fato que falhou."
+    }
+  },
+  "visual_effects": {
+    "overview": { "effect_intensity": "none", "performance_tier": "lightweight", "fallback_strategy": "Nada a desligar; prefers-reduced-motion zera as transições.", "primary_technology": "CSS only" },
+    "background_effects": { "type": "none", "description": "Fundo liso #f4f6f5.", "technology": "CSS", "params": { "color_palette": ["#f4f6f5"], "speed": "0", "density": "0", "opacity": "1", "blend_mode": "normal" } },
+    "particle_systems": { "enabled": false, "type": "none", "description": "Não usado.", "technology": "none", "params": { "count": "0", "shape": "none", "size_range": "0", "movement_pattern": "none", "color_behavior": "none", "interaction": "none", "spawn_area": "none" } },
+    "3d_elements": { "enabled": false, "type": "none", "description": "Não usado.", "technology": "none", "params": { "renderer": "none", "lighting": "none", "camera": "none", "materials": "none", "geometry": "none", "post_processing": [], "interaction_model": "none" } },
+    "shader_effects": { "enabled": false, "type": "none", "description": "Não usado.", "technology": "none", "params": { "uniforms": "none", "vertex_manipulation": "none", "fragment_output": "none", "noise_type": "none", "distortion": "none" } },
+    "scroll_effects": {
+      "parallax": { "enabled": false, "layers": "0", "depth_range": "0", "speed_curve": "none" },
+      "scroll_triggered_animations": { "enabled": false, "trigger_points": "none", "animation_type": "none", "scrub_behavior": "none" },
+      "scroll_morphing": { "enabled": false, "description": "Não usado; só a barra superior fica fixa." }
+    },
+    "text_effects": { "type": "none", "description": "Texto estático.", "technology": "CSS", "params": { "split_strategy": "none", "animation_per_unit": "none", "stagger": "0", "effect_style": "none" } },
+    "cursor_effects": { "enabled": false, "type": "none", "description": "Cursor padrão.", "params": { "shape": "default", "size": "default", "blend_mode": "normal", "trail": "none", "interaction_zone": "none" } },
+    "image_effects": { "type": "none", "description": "Sem imagens além da logo.", "technology": "none", "params": { "filter_pipeline": "none", "hover_transform": "none", "reveal_animation": "none", "distortion_type": "none" } },
+    "glassmorphism_neumorphism": { "enabled": false, "style": "none", "params": { "blur_radius": "0", "transparency": "0", "border_treatment": "1px sólida", "shadow_type": "none", "light_source_angle": "none" } },
+    "canvas_drawings": { "enabled": false, "type": "none", "description": "Não usado.", "technology": "none", "params": { "draw_method": "none", "animation_loop": "none", "color_scheme": "none", "responsiveness": "none", "interaction": "none" } },
+    "svg_animations": { "enabled": false, "type": "none", "description": "Ícones lucide estáticos.", "params": { "animation_method": "none", "path_morphing": "none", "stroke_animation": "none", "filter_effects": "none" } },
+    "composite_notes": "Sem efeitos especiais por decisão: é uma tela de trabalho para uma demo de cinco minutos. O único 'efeito' é estrutural: as abas de etapa sobrepõem a borda da folha em 1px (margin-bottom: -1px e um ::after branco) para parecerem presas a ela."
+  }
+}

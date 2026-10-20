@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test:rules": "node --experimental-strip-types --test scripts/rules.test.mjs",
+    "test:tutorial": "node --experimental-strip-types --test scripts/tutorial.test.mjs",
     "test:ai": "node --experimental-strip-types --test scripts/ata-assistant.test.mjs scripts/compliance-review.test.mjs",
     "lint": "oxlint src",
     "preview": "vite preview"
