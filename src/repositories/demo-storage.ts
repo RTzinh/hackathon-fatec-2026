@@ -1,7 +1,7 @@
 import { demoState } from '../data/demo-data'
 import type { DemoState } from '../domain/types'
 
-const STORAGE_KEY = 'sig-banca-demo-v1'
+const STORAGE_KEY = 'sig-banca-demo-v2'
 
 export function loadDemoState(): DemoState {
   try {

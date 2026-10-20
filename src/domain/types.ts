@@ -1,9 +1,11 @@
-export type ProfileRole = 'orientador' | 'convidado' | 'aluno' | 'coordenacao' | 'publico'
+export type ProfileRole = 'orientador' | 'convidado' | 'aluno' | 'coordenacao' | 'bibliotecario' | 'publico'
 export type BoardStatus = 'agendada' | 'realizada' | 'pendente-correcao' | 'concluida'
 export type InvitationStatus = 'pendente' | 'aceito' | 'recusado' | 'expirado'
 export type DocumentStatus = 'pendente' | 'enviado' | 'ajustes-solicitados' | 'aprovado'
 export type VersionStatus = 'enviada' | 'ajustes-solicitados' | 'aprovada'
 export type DepositStatus = 'nao-encaminhado' | 'encaminhado' | 'registrado'
+export type AccessLevel = 'integral' | 'embargo' | 'restrito'
+export type FundingAgency = 'nao' | 'capes' | 'cnpq' | 'fapesp' | 'outro'
 
 export interface User {
   id: string
@@ -67,6 +69,25 @@ export interface StoredFile {
   size: number
   selectedAt: string
   persistence: 'metadados-locais'
+  inspection?: PdfInspection
+}
+
+/** Leitura local dos bytes no momento da seleção; só o resultado persiste. */
+export interface PdfInspection {
+  isPdf: boolean
+  pdfaPart?: string
+  inspectedBytes: number
+}
+
+/** Campos do Termo de Autorização (Anexo C da Portaria CEETEPS-GDS 4069/2024). */
+export interface TermData {
+  accessLevel: AccessLevel
+  embargoUntil?: string
+  fundingAgency: FundingAgency
+  correctionsDeclared: boolean
+  signatures: { authors: boolean; advisor: boolean; coordinator: boolean }
+  coordinatorSignedBy?: string
+  coordinatorSignedAt?: string
 }
 
 export interface BoardDocument {
@@ -77,6 +98,7 @@ export interface BoardDocument {
   file?: StoredFile
   requestedAt?: string
   note?: string
+  term?: TermData
 }
 
 export interface FinalVersion {
@@ -113,6 +135,10 @@ export interface HistoryEvent {
 export interface DepositRecord {
   workId: string
   status: DepositStatus
+  forwardedBy?: string
+  packageFiles?: string[]
+  academicServicesCopy?: boolean
+  submittedBy?: string
   sentToLibraryAt?: string
   recordedAt?: string
   receiptUrl?: string

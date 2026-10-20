@@ -18,7 +18,7 @@
 .nav-link span:nth-child(2) { flex: 1; font-size: 13px; font-weight: 500; }
 .nav-count { display: grid; min-width: 20px; height: 20px; place-items: center; border-radius: 10px; color: #fff; background: #6c3037; font-size: 10px; font-weight: 700; }
 .sidebar-bottom { margin-top: auto; }
-.sidebar-help { display: flex; align-items: center; gap: 9px; margin: 0 2px 16px; padding: 12px 10px; border: 1px solid rgb(255 255 255 / 15%); border-radius: 7px; }
+.sidebar-help { display: flex; width: calc(100% - 4px); align-items: center; gap: 9px; margin: 0 2px 16px; color: inherit; text-align: left; cursor: pointer; padding: 12px 10px; border: 1px solid rgb(255 255 255 / 15%); border-radius: 7px; }
 .sidebar-help__icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 7px; color: #f0c6a3; background: rgb(255 255 255 / 8%); }
 .sidebar-help > div { display: grid; flex: 1; gap: 3px; }
 .sidebar-help strong { color: white; font-size: 11px; }
@@ -114,7 +114,7 @@
 .panel--flow { margin-top: 17px; }
 .flow-caption { display: inline-flex; align-items: center; gap: 7px; color: var(--quiet); font-size: 10px; }
 .flow-caption-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
-.workflow-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 18px 20px 21px; }
+.workflow-track { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 18px 20px 21px; }
 .workflow-step { position: relative; display: grid; grid-template-columns: 29px 1fr; grid-template-rows: 22px auto; align-items: center; column-gap: 9px; padding: 0 12px; }
 .workflow-step + .workflow-step { border-left: 1px solid var(--line); }
 .workflow-step__index { color: #87918f; font-size: 9px; font-weight: 650; font-variant-numeric: tabular-nums; }
@@ -246,3 +246,4 @@ td small { margin-top: 3px; color: var(--quiet); font-size: 9px; }
   .storage-warning { padding-inline: 14px; font-size: 10px; }
   .toast { right: 12px; bottom: 12px; }
 }
+.sidebar-help:hover { background: rgb(255 255 255 / 6%); }

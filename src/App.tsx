@@ -3,7 +3,7 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import {
   AlertCircle, ArrowRight, Bell, BookOpenCheck, CalendarDays, Check,
   CheckCircle2, ChevronDown, ClipboardCheck, Clock3, FileCheck2, FileText,
-  GraduationCap, LayoutDashboard, Mail, Menu, Plus, RotateCcw, Search,
+  GraduationCap, LayoutDashboard, Library, Mail, Menu, Network, Plus, RotateCcw, Search,
   Settings2, UsersRound, X,
 } from 'lucide-react'
 import { PageHeader } from './components/PageHeader'
@@ -15,11 +15,13 @@ import { StudentPage } from './pages/StudentPage'
 import { PostDefensePage } from './pages/PostDefensePage'
 import { ConsultationPage } from './pages/ConsultationPage'
 import { CoordinationPage } from './pages/CoordinationPage'
+import { LibraryPage } from './pages/LibraryPage'
+import { ProcessModelPage } from './pages/ProcessModelPage'
 import { loadDemoState, resetDemoState, saveDemoState } from './repositories/demo-storage'
 import type { DemoState, ProfileRole, User } from './domain/types'
 import './App.css'
 
-export type View = 'overview' | 'schedule' | 'post-defense' | 'guest' | 'student' | 'consultation' | 'coordination' | 'outbox'
+export type View = 'overview' | 'schedule' | 'post-defense' | 'guest' | 'student' | 'consultation' | 'coordination' | 'library' | 'outbox' | 'model'
 export type Toast = { kind: 'success' | 'error' | 'info'; message: string }
 export interface PageProps {
   state: DemoState
@@ -34,9 +36,11 @@ const profiles: Array<{ id: string; role: ProfileRole; label: string; name: stri
   { id: 'u-marcos', role: 'convidado', label: 'Docente convidado', name: 'Marcos Reis' },
   { id: 'u-davi', role: 'aluno', label: 'Aluno', name: 'Davi Rocha' },
   { id: 'u-eva', role: 'coordenacao', label: 'Coordenação', name: 'Eva Ribeiro' },
+  { id: 'u-renata', role: 'bibliotecario', label: 'Bibliotecário', name: 'Renata Prado' },
   { id: 'publico', role: 'publico', label: 'Consulta pública', name: 'Visitante' },
 ]
 
+const modelView = { id: 'model' as const, label: 'Modelo do processo', icon: Network }
 const roleViews: Record<ProfileRole, Array<{ id: View; label: string; icon: typeof CalendarDays }>> = {
   orientador: [
     { id: 'overview', label: 'Visão geral', icon: LayoutDashboard },
@@ -44,6 +48,7 @@ const roleViews: Record<ProfileRole, Array<{ id: View; label: string; icon: type
     { id: 'post-defense', label: 'Pós-banca e documentos', icon: FileCheck2 },
     { id: 'outbox', label: 'Caixa de saída', icon: Mail },
     { id: 'consultation', label: 'Consulta pública', icon: Search },
+    modelView,
   ],
   convidado: [
     { id: 'guest', label: 'Meus convites', icon: Mail },
@@ -56,8 +61,13 @@ const roleViews: Record<ProfileRole, Array<{ id: View; label: string; icon: type
   coordenacao: [
     { id: 'coordination', label: 'Pendências', icon: ClipboardCheck },
     { id: 'consultation', label: 'Consulta pública', icon: Search },
+    modelView,
   ],
-  publico: [{ id: 'consultation', label: 'Consultar bancas', icon: Search }],
+  bibliotecario: [
+    { id: 'library', label: 'Fila da biblioteca', icon: Library },
+    { id: 'consultation', label: 'Consulta pública', icon: Search },
+  ],
+  publico: [{ id: 'consultation', label: 'Consultar bancas', icon: Search }, modelView],
 }
 
 function resolveProfile(id: string): User {
@@ -101,7 +111,7 @@ export default function App() {
   function changeProfile(nextId: string) {
     setProfileId(nextId)
     const next = profiles.find((profile) => profile.id === nextId)
-    const nextView = next?.role === 'convidado' ? 'guest' : next?.role === 'aluno' ? 'student' : next?.role === 'coordenacao' ? 'coordination' : next?.role === 'publico' ? 'consultation' : 'overview'
+    const nextView = next?.role === 'convidado' ? 'guest' : next?.role === 'aluno' ? 'student' : next?.role === 'coordenacao' ? 'coordination' : next?.role === 'bibliotecario' ? 'library' : next?.role === 'publico' ? 'consultation' : 'overview'
     navigate(nextView)
   }
   function restoreDemo() {
@@ -114,7 +124,7 @@ export default function App() {
 
   if (!isReady) return <div className="loading-screen" role="status"><div className="brand-mark brand-mark--loading">S</div><span>Preparando a demonstração…</span></div>
   const pages = roleViews[currentProfile.role]
-  const activePage = pages.find((item) => item.id === view) ?? roleViews[viewer.role][0]
+  const activePage = pages.find((item) => item.id === view) ?? (view === 'model' ? modelView : pages[0])
   const props: PageProps = { state, setState, viewer, navigate, notify: setToast }
 
   return <div className="app-shell">
@@ -127,7 +137,7 @@ export default function App() {
         {pages.map(({ id, label, icon: Icon }) => <button key={id} className={`nav-link ${view === id ? 'nav-link--active' : ''}`} onClick={() => navigate(id)} aria-current={view === id ? 'page' : undefined}><Icon size={18} strokeWidth={1.8} /><span>{label}</span>{id === 'outbox' && <span className="nav-count">{state.outbox.length}</span>}</button>)}
       </nav>
       <div className="sidebar-bottom">
-        <div className="sidebar-help"><span className="sidebar-help__icon"><BookOpenCheck size={17} /></span><div><strong>Fluxo de bancas</strong><span>Da agenda ao depósito</span></div><ArrowRight size={15} /></div>
+        <button className="sidebar-help" onClick={() => navigate('model')}><span className="sidebar-help__icon"><BookOpenCheck size={17} /></span><div><strong>Fluxo de bancas</strong><span>Da agenda ao depósito</span></div><ArrowRight size={15} /></button>
         <div className="sidebar-footnote">Projeto demonstrativo · Dados fictícios</div>
       </div>
     </aside>
@@ -151,6 +161,8 @@ export default function App() {
         {view === 'student' && <StudentPage {...props} />}
         {view === 'consultation' && <ConsultationPage {...props} />}
         {view === 'coordination' && <CoordinationPage {...props} />}
+        {view === 'library' && <LibraryPage {...props} />}
+        {view === 'model' && <ProcessModelPage />}
         {view === 'outbox' && <OutboxPage state={state} navigate={navigate} />}
       </main>
       <footer className="app-footer"><span>II Hackathon AMS Fatec Bauru/IBM</span><span>·</span><span>Protótipo navegável</span><button onClick={restoreDemo}><RotateCcw size={14} /> Restaurar cenário inicial</button></footer>
@@ -166,6 +178,18 @@ function OverviewPage({ state, navigate }: PageProps) {
     corrections: state.boards.filter((board) => board.status === 'pendente-correcao').length,
   }
   const nextBoards = [...state.boards].filter((board) => board.status !== 'concluida').sort((a, b) => a.date.localeCompare(b.date)).slice(0, 4)
+  const total = state.works.length
+  const boardOf = (workId: string) => state.boards.find((board) => board.workId === workId)
+  const documentOf = (workId: string, kind: 'ata' | 'autorizacao-ric-cps') => state.documents.find((document) => document.boardId === boardOf(workId)?.id && document.kind === kind)
+  const steps = [
+    { label: 'Agendamento', complete: state.works.filter((work) => boardOf(work.id)).length, tone: 'red', icon: CalendarDays },
+    { label: 'Convites aceitos', complete: state.works.filter((work) => state.invitations.some((invite) => invite.boardId === boardOf(work.id)?.id && invite.status === 'aceito')).length, tone: 'amber', icon: Mail },
+    { label: 'Ata conferida', complete: state.works.filter((work) => documentOf(work.id, 'ata')?.status === 'aprovado').length, tone: 'blue', icon: FileText },
+    { label: 'Versão com aval', complete: state.works.filter((work) => state.versions.some((version) => version.workId === work.id && version.status === 'aprovada')).length, tone: 'green', icon: ClipboardCheck },
+    { label: 'TA validado', complete: state.works.filter((work) => documentOf(work.id, 'autorizacao-ric-cps')?.status === 'aprovado').length, tone: 'blue', icon: FileCheck2 },
+    { label: 'Depósito RIC-CPS', complete: state.deposits.filter((deposit) => deposit.status === 'registrado').length, tone: 'slate', icon: BookOpenCheck },
+  ]
+  const versionsToReview = state.versions.filter((version) => version.status === 'enviada')
   return <>
     <PageHeader title="Acompanhe suas bancas" description="Agenda, confirmações e próximos passos em um único fluxo." actions={<button className="button button--primary" onClick={() => navigate('schedule')}><Plus size={17} /> Nova banca</button>} />
     <div className="overview-strip" aria-label="Resumo do cenário demonstrativo">
@@ -198,20 +222,14 @@ function OverviewPage({ state, navigate }: PageProps) {
         <div className="priority-lead"><span className="priority-lead__badge"><AlertCircle size={17} /></span><div><strong>{counts.pending} resposta(s) ainda pendente(s)</strong><p>Convites aguardam resposta dos docentes convidados.</p><button className="text-button" onClick={() => navigate('outbox')}>Abrir caixa de saída <ArrowRight size={15} /></button></div></div>
         <div className="priority-divider" />
         <div className="priority-line"><span className="priority-line__icon priority-line__icon--amber"><FileText size={16} /></span><div><strong>Conferir documentos</strong><span>{state.documents.filter((doc) => doc.status === 'pendente' || doc.status === 'ajustes-solicitados').length} itens aguardam revisão ou envio</span></div><button className="icon-button icon-button--small" aria-label="Abrir pós-banca" onClick={() => navigate('post-defense')}><ArrowRight size={15} /></button></div>
-        <div className="priority-line"><span className="priority-line__icon priority-line__icon--blue"><UsersRound size={16} /></span><div><strong>Nova versão enviada</strong><span>Versão 2 aguarda avaliação do orientador</span></div><button className="icon-button icon-button--small" aria-label="Abrir revisão" onClick={() => navigate('post-defense')}><ArrowRight size={15} /></button></div>
+        <div className="priority-line"><span className="priority-line__icon priority-line__icon--blue"><UsersRound size={16} /></span><div><strong>Versões para avaliar</strong><span>{versionsToReview.length ? versionsToReview.map((version) => `v${version.number} de ${state.works.find((work) => work.id === version.workId)?.title}`).join(' · ') : 'Nenhuma versão aguardando aval'}</span></div><button className="icon-button icon-button--small" aria-label="Abrir revisão" onClick={() => navigate('post-defense')}><ArrowRight size={15} /></button></div>
         <div className="priority-hint"><Check size={15} /> Aprovação fica ligada à versão analisada.</div>
       </section>
     </div>
     <section className="panel panel--flow" aria-labelledby="flow-heading">
-      <div className="panel-heading"><div><h2 id="flow-heading">Trilha do trabalho</h2><p>Da formação da banca ao registro do depósito</p></div><span className="flow-caption"><span className="flow-caption-dot" /> 5 trabalhos fictícios</span></div>
+      <div className="panel-heading"><div><h2 id="flow-heading">Trilha do trabalho</h2><p>Da formação da banca ao registro do depósito</p></div><span className="flow-caption"><span className="flow-caption-dot" /> {total} trabalhos fictícios</span></div>
       <div className="workflow-track" aria-label="Etapas do ciclo da banca">
-        {[
-          { label: 'Agendamento', complete: 4, total: 5, tone: 'red', icon: CalendarDays },
-          { label: 'Convites', complete: 3, total: 5, tone: 'amber', icon: Mail },
-          { label: 'Defesa e ata', complete: 3, total: 5, tone: 'blue', icon: FileText },
-          { label: 'Versão final', complete: 2, total: 5, tone: 'green', icon: ClipboardCheck },
-          { label: 'Depósito', complete: 1, total: 5, tone: 'slate', icon: BookOpenCheck },
-        ].map(({ label, complete, total, tone, icon: Icon }, index) => <div className={`workflow-step workflow-step--${tone}`} key={label}>
+        {steps.map(({ label, complete, tone, icon: Icon }, index) => <div className={`workflow-step workflow-step--${tone}`} key={label}>
           <span className="workflow-step__index">{String(index + 1).padStart(2, '0')}</span><span className="workflow-step__icon"><Icon size={17} /></span><div className="workflow-step__body"><strong>{label}</strong><span>{complete} de {total} trabalhos</span><div className="workflow-bar"><span style={{ width: `${(complete / total) * 100}%` }} /></div></div>
         </div>)}
       </div>
