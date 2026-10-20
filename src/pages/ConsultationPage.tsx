@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Search, X } from 'lucide-react'
+import { ExternalLink, Search, X } from 'lucide-react'
 import { PageHeader } from '../components/PageHeader'
-import { StatusBadge } from '../components/StatusBadge'
+import { StatusBadge, statusLabel } from '../components/StatusBadge'
 import type { PageProps } from '../App'
 import './ConsultationPage.css'
 
@@ -11,7 +11,8 @@ export function ConsultationPage({ state }: PageProps) {
     const work = state.works.find((item) => item.id === board.workId)!
     const authors = work.authorIds.map((id) => state.users.find((user) => user.id === id)!).filter(Boolean)
     const evaluatorNames = state.invitations.filter((invite) => invite.boardId === board.id && invite.status === 'aceito').map((invite) => state.users.find((user) => user.id === invite.inviteeId)?.name).filter(Boolean) as string[]
-    return { board, work, course: state.courses.find((course) => course.id === work.courseId)!, advisor: state.users.find((user) => user.id === work.advisorId)!, authors, evaluatorNames }
+    const deposit = state.deposits.find((item) => item.workId === work.id)
+    return { board, work, course: state.courses.find((course) => course.id === work.courseId)!, advisor: state.users.find((user) => user.id === work.advisorId)!, authors, evaluatorNames, deposit }
   }).filter(({ board, course, advisor, authors, evaluatorNames }) =>
     (!filters.course || course.id === filters.course) &&
     (!filters.student || authors.some((author) => author.name.toLowerCase().includes(filters.student.toLowerCase()))) &&
@@ -34,13 +35,13 @@ export function ConsultationPage({ state }: PageProps) {
         <label>Docente avaliador<input value={filters.evaluator} onChange={(event) => update('evaluator', event.target.value)} placeholder="Nome do docente" /></label>
         <label>Semestre<select value={filters.semester} onChange={(event) => update('semester', event.target.value)}><option value="">Todos</option><option value="1">1º</option><option value="2">2º</option></select></label>
         <label>Ano<select value={filters.year} onChange={(event) => update('year', event.target.value)}><option value="">Todos</option>{[...new Set(state.boards.map((board) => board.year))].sort((a, b) => b - a).map((year) => <option key={year}>{year}</option>)}</select></label>
-        <label>Status<select value={filters.status} onChange={(event) => update('status', event.target.value)}><option value="">Todos</option>{['agendada', 'realizada', 'pendente-correcao', 'concluida'].map((status) => <option key={status} value={status}>{status.replaceAll('-', ' ')}</option>)}</select></label>
+        <label>Status<select value={filters.status} onChange={(event) => update('status', event.target.value)}><option value="">Todos</option>{['agendada', 'realizada', 'pendente-correcao', 'concluida'].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}</select></label>
         {hasFilter && <button className="button button--quiet clear-filters" onClick={() => setFilters({ course: '', student: '', advisor: '', evaluator: '', semester: '', year: '', status: '' })}><X size={15} /> Limpar filtros</button>}
       </div>
     </section>
     <section className="panel table-panel consultation-results"><div className="panel-heading"><div><h2>Bancas encontradas</h2><p>{rows.length} resultado(s)</p></div></div>
-      {rows.length ? <div className="table-scroll"><table><thead><tr><th>Trabalho</th><th>Curso e autoria</th><th>Orientador</th><th>Avaliadores</th><th>Data e local</th><th>Status</th></tr></thead><tbody>{rows.map(({ board, work, course, advisor, authors, evaluatorNames }) => <tr key={board.id}><td><strong>{work.title}</strong></td><td>{course.code}<small>{authors.map((author) => author.name).join(', ')}</small></td><td>{advisor.name}</td><td>{evaluatorNames.join(', ') || 'Não informado'}</td><td>{new Date(`${board.date}T12:00:00`).toLocaleDateString('pt-BR')}<small>{board.start}–{board.end} · {board.location}</small></td><td><StatusBadge status={board.status} /></td></tr>)}</tbody></table></div> : <div className="empty-state"><span><Search size={18} /></span><div><strong>Nenhuma banca encontrada</strong><p>Remova alguns filtros ou limpe a busca para ver resultados.</p></div></div>}
-      <p className="table-note">Consulta de demonstração. Os dados não confirmam publicação institucional.</p>
+      {rows.length ? <div className="table-scroll"><table><thead><tr><th>Trabalho</th><th>Curso e autoria</th><th>Orientador</th><th>Avaliadores</th><th>Data e local</th><th>Status</th><th>RIC-CPS</th></tr></thead><tbody>{rows.map(({ board, work, course, advisor, authors, evaluatorNames, deposit }) => <tr key={board.id}><td><strong>{work.title}</strong></td><td>{course.code}<small>{authors.map((author) => author.name).join(', ')}</small></td><td>{advisor.name}</td><td>{evaluatorNames.join(', ') || 'Não informado'}</td><td>{new Date(`${board.date}T12:00:00`).toLocaleDateString('pt-BR')}<small>{board.start}–{board.end} · {board.location}</small></td><td><StatusBadge status={board.status} /></td><td>{deposit?.status === 'registrado' && deposit.receiptUrl ? <a className="inline-link" href={deposit.receiptUrl} target="_blank" rel="noreferrer">Ver registro <ExternalLink size={12} /></a> : deposit?.status === 'encaminhado' ? 'Na biblioteca' : '—'}</td></tr>)}</tbody></table></div> : <div className="empty-state"><span><Search size={18} /></span><div><strong>Nenhuma banca encontrada</strong><p>Remova alguns filtros ou limpe a busca para ver resultados.</p></div></div>}
+      <p className="table-note">Consulta livre, sem cadastro (Art. 15). Quais metadados da banca podem ser públicos ainda depende de confirmação da coordenação; os dados são fictícios.</p>
     </section>
   </>
 }

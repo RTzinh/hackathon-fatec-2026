@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
-import { AlertTriangle, CalendarDays, Check, Clock3, Mail, Plus, Users, X } from 'lucide-react'
+import { AlertTriangle, CalendarCheck, CalendarDays, Check, Clock3, Mail, Plus, Users, X } from 'lucide-react'
 import { PageHeader } from '../components/PageHeader'
 import { StatusBadge } from '../components/StatusBadge'
 import { detectConflicts, suggestAlternativeSlots } from '../domain/rules'
@@ -9,12 +9,12 @@ import type { PageProps } from '../App'
 import './SchedulePage.css'
 
 type Draft = {
-  title: string; courseId: string; authorIds: string[]; advisorId: string; evaluatorIds: string[]
+  title: string; courseId: string; authorIds: string[]; advisorId: string; evaluatorIds: string[]; workType: string; hasProduct: boolean
   date: string; start: string; end: string; modality: 'presencial' | 'online' | 'hibrida'; location: string
 }
 
 const initialDraft = (advisorId: string): Draft => ({
-  title: '', courseId: '', authorIds: [], advisorId, evaluatorIds: [],
+  title: '', courseId: '', authorIds: [], advisorId, evaluatorIds: [], workType: 'Monografia', hasProduct: false,
   date: '2026-10-23', start: '14:00', end: '15:30', modality: 'presencial', location: '',
 })
 
@@ -52,7 +52,7 @@ export function SchedulePage({ state, setState, viewer, notify }: PageProps) {
     const workId = `w-${suffix}`
     const boardId = `b-${suffix}`
     const now = new Date().toISOString()
-    const newWork = { id: workId, title: draft.title.trim(), courseId: draft.courseId, advisorId: draft.advisorId, authorIds: draft.authorIds, workType: 'Trabalho de graduação', hasProduct: false, updatedAt: now }
+    const newWork = { id: workId, title: draft.title.trim(), courseId: draft.courseId, advisorId: draft.advisorId, authorIds: draft.authorIds, workType: draft.workType, hasProduct: draft.hasProduct, updatedAt: now }
     const newBoard: DefenseBoard = { id: boardId, workId, date: draft.date, start: draft.start, end: draft.end, modality: draft.modality, location: draft.location.trim(), status: 'agendada', semester: Number(draft.date.slice(5, 7)) <= 6 ? 1 : 2, year: Number(draft.date.slice(0, 4)) }
     const invites: Invitation[] = draft.evaluatorIds.map((inviteeId, index) => ({ id: `i-${suffix}-${index}`, boardId, inviteeId, status: 'pendente', token: `demo-${suffix}-${index}`, expiresAt: `${draft.date}T23:59:00`, sentAt: now }))
     setState((current) => ({
@@ -89,6 +89,22 @@ export function SchedulePage({ state, setState, viewer, notify }: PageProps) {
     notify({ kind: 'success', message: `Convite demonstrativo criado para ${replacement.name}.` })
   }
 
+  function markHeld(board: DefenseBoard) {
+    const accepted = state.invitations.filter((invite) => invite.boardId === board.id && invite.status === 'aceito').length
+    const future = board.date > new Date().toISOString().slice(0, 10)
+    const warnings = [future && 'a data da banca ainda não chegou', !accepted && 'nenhum convidado aceitou'].filter(Boolean)
+    if (!window.confirm(`Registrar que a defesa foi realizada?${warnings.length ? `
+
+Atenção: ${warnings.join(' e ')}. Registrar mesmo assim para a demonstração?` : ''}`)) return
+    const now = new Date().toISOString()
+    setState((current) => ({
+      ...current,
+      boards: current.boards.map((item) => item.id === board.id ? { ...item, status: 'realizada' } : item),
+      history: [...current.history, { id: `h-${Date.now().toString(36)}`, boardId: board.id, at: now, actorId: viewer.id, label: 'Defesa realizada', detail: 'Próximo passo: anexar a ata e registrar nota e indicação.' }],
+    }))
+    notify({ kind: 'success', message: 'Defesa registrada. Anexe a ata em Pós-banca e documentos.' })
+  }
+
   return <>
     <PageHeader title="Agenda e bancas" description="Cadastre trabalhos, forme a banca e acompanhe as confirmações." actions={<button className="button button--primary" onClick={() => setShowForm((visible) => !visible)}>{showForm ? <X size={16} /> : <Plus size={16} />}{showForm ? 'Fechar cadastro' : 'Cadastrar banca'}</button>} />
     {showForm && <section className="panel form-panel" aria-labelledby="new-board-title">
@@ -98,6 +114,8 @@ export function SchedulePage({ state, setState, viewer, notify }: PageProps) {
           <label className="field field--wide"><span>Título do trabalho <b>*</b></span><input autoComplete="off" value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="Ex.: Plataforma de apoio à pesquisa aplicada" /></label>
           <label className="field"><span>Curso <b>*</b></span><select value={draft.courseId} onChange={(event) => setDraft({ ...draft, courseId: event.target.value })}><option value="">Selecione um curso</option>{state.courses.map((course) => <option key={course.id} value={course.id}>{course.code} · {course.name}</option>)}</select></label>
           <label className="field"><span>Orientador <b>*</b></span><select value={draft.advisorId} onChange={(event) => setDraft({ ...draft, advisorId: event.target.value })}>{advisors.map((advisor) => <option key={advisor.id} value={advisor.id}>{advisor.name}</option>)}</select></label>
+          <label className="field"><span>Tipo do trabalho <b>*</b></span><select value={draft.workType} onChange={(event) => setDraft({ ...draft, workType: event.target.value })}>{['Monografia', 'Artigo', 'Relatório técnico', 'Projeto aplicado', 'Protótipo', 'PDI'].map((type) => <option key={type}>{type}</option>)}</select></label>
+          <label className="choice field-checkbox"><input type="checkbox" checked={draft.hasProduct} onChange={(event) => setDraft({ ...draft, hasProduct: event.target.checked })} /><span>Possui produto complementar<small>Software, protótipo, jogo etc. (vai zipado ao RIC-CPS)</small></span></label>
           <div className="field field--wide"><span>Aluno(s) <b>*</b></span><div className="choice-grid">{students.map((student) => <label className="choice" key={student.id}><input type="checkbox" checked={draft.authorIds.includes(student.id)} onChange={() => toggleDraftId('authorIds', student.id)} /><span>{student.name}</span></label>)}</div></div>
         </div></fieldset>
         <fieldset className="form-section"><legend>Data e local</legend><div className="form-grid">
@@ -121,7 +139,7 @@ export function SchedulePage({ state, setState, viewer, notify }: PageProps) {
         return <article className="board-list-row" key={board.id}>
           <div className="board-list-row__date"><strong>{formatDate(board.date)}</strong><span>{board.start}–{board.end}</span></div>
           <div className="board-list-row__main"><strong>{work.title}</strong><span>{course.code} · {work.authorIds.map((id) => state.users.find((user) => user.id === id)?.name).filter(Boolean).join(', ')}</span><small>{board.modality === 'online' ? 'Online' : board.modality === 'hibrida' ? 'Híbrida' : 'Presencial'} · {board.location} · Orientador: {advisor.name}</small></div>
-          <div className="board-list-row__status"><StatusBadge status={board.status} /><div className="invite-summary">{boardInvitations.map((invite) => <span key={invite.id} title={state.users.find((user) => user.id === invite.inviteeId)?.name}><span className={`invite-mini invite-mini--${invite.status}`} />{state.users.find((user) => user.id === invite.inviteeId)?.name.split(' ')[0]} · {statusLabel(invite.status)}</span>)}</div></div>
+          <div className="board-list-row__status"><StatusBadge status={board.status} />{board.status === 'agendada' && <button className="button button--small" onClick={() => markHeld(board)}><CalendarCheck size={14} /> Registrar realização</button>}<div className="invite-summary">{boardInvitations.map((invite) => <span key={invite.id} title={state.users.find((user) => user.id === invite.inviteeId)?.name}><span className={`invite-mini invite-mini--${invite.status}`} />{state.users.find((user) => user.id === invite.inviteeId)?.name.split(' ')[0]} · {statusLabel(invite.status)}</span>)}</div></div>
           {boardInvitations.some((invite) => invite.status === 'recusado') && <div className="replacement"><button className="text-button" onClick={() => setReplacementFor(replacementFor === board.id ? '' : board.id)}><Users size={14} /> Substituir convidado que recusou</button>{replacementFor === board.id && <div className="replacement-form"><label className="sr-only" htmlFor={`replacement-${board.id}`}>Escolher convidado substituto</label><select id={`replacement-${board.id}`} value={replacementId} onChange={(event) => setReplacementId(event.target.value)}><option value="">Selecionar docente</option>{guests.filter((guest) => !boardInvitations.some((invite) => invite.inviteeId === guest.id && invite.status !== 'recusado')).map((guest) => <option key={guest.id} value={guest.id}>{guest.name}</option>)}</select><button className="button button--small button--primary" onClick={() => replaceInvite(boardInvitations.find((invite) => invite.status === 'recusado')!)} disabled={!replacementId}>Criar convite</button></div>}</div>}
         </article>
       })}</div>

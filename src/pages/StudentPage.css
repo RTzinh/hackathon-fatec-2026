@@ -85,3 +85,9 @@
   .version-row > .status { grid-column: 2; justify-self: start; }
   .deadline-panel__rule { padding-inline: 12px; }
 }
+.expected-name { display: grid; gap: 4px; margin-bottom: 12px; padding: 9px 10px; border: 1px dashed #c9d1ce; border-radius: 5px; background: #fbfbf9; }
+.expected-name span { color: var(--quiet); font-size: 8px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase; }
+.expected-name code { color: var(--ink); font-size: 10px; overflow-wrap: anywhere; }
+.expected-name small { color: var(--muted); font-size: 9px; }
+.upload-panel .check-chips { margin: 8px 0; }
+.version-info .check-chips { margin: 4px 0; }

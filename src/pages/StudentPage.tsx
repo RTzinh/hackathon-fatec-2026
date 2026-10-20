@@ -3,7 +3,8 @@ import { AlertCircle, ArrowUpRight, CalendarDays, CheckCircle2, Clock3, FileCloc
 import { FilePicker } from '../components/FilePicker'
 import { PageHeader } from '../components/PageHeader'
 import { StatusBadge } from '../components/StatusBadge'
-import { correctionDeadline } from '../domain/rules'
+import { MAX_WORK_BYTES, checkRicFile, correctionDeadline, ricFileName } from '../domain/rules'
+import { CheckChips } from './PostDefensePage'
 import type { StoredFile } from '../domain/types'
 import type { PageProps } from '../App'
 import './StudentPage.css'
@@ -19,6 +20,7 @@ export function StudentPage({ state, setState, viewer, notify }: PageProps) {
   const tasks = work ? state.correctionTasks.filter((task) => task.workId === work.id) : []
   const deadline = board && (board.status === 'realizada' || board.status === 'pendente-correcao') ? correctionDeadline(board.date) : undefined
   const daysLeft = deadline ? daysFromToday(deadline) : undefined
+  const expectedName = work && board && course ? ricFileName({ courseCode: course.code, year: board.year, semester: board.semester, firstAuthor: state.users.find((user) => user.id === work.authorIds[0])?.name ?? '', title: work.title }) : ''
 
   function submitVersion() {
     if (!work || !board || !selectedFile) { setFormError('Selecione um arquivo antes de enviar.'); return }
@@ -51,14 +53,16 @@ export function StudentPage({ state, setState, viewer, notify }: PageProps) {
           {tasks.length ? <div className="task-list">{tasks.map((task) => <div className="correction-task" key={task.id}><span className={`task-check task-check--${task.status}`}>{task.status === 'concluida' ? <CheckCircle2 size={16} /> : <FileClock size={16} />}</span><div><div className="task-title-line"><strong>{task.title}</strong><StatusBadge status={task.status} /></div><p>{task.detail}</p><small>{task.source === 'sugestao-ia' ? 'Sugestão demonstrativa de IA · aguardando revisão do orientador' : 'Indicação da banca'}</small></div></div>)}</div> : <div className="empty-state"><span><CheckCircle2 size={18} /></span><div><strong>Nenhuma tarefa registrada</strong><p>As solicitações aparecerão aqui quando forem incluídas.</p></div></div>}
         </section>
         <section className="panel version-panel"><div className="panel-heading"><div><h2>Versões definitivas</h2><p>Cada análise e aprovação fica ligada à versão enviada.</p></div><History size={18} className="version-heading-icon" /></div>
-          <div className="version-list">{versions.length ? versions.map((version) => <article className="version-row" key={version.id}><div className="version-badge">v{version.number}</div><div className="version-info"><strong>{version.file.name}</strong><span>{new Date(version.submittedAt).toLocaleString('pt-BR')} · {formatSize(version.file.size)}</span>{version.reviewNote && <p>{version.reviewNote}</p>}</div><StatusBadge status={version.status} /></article>) : <div className="empty-state"><span><FileText size={18} /></span><div><strong>Primeira versão ainda não enviada</strong><p>Selecione o arquivo da versão definitiva abaixo.</p></div></div>}</div>
+          <div className="version-list">{versions.length ? versions.map((version) => <article className="version-row" key={version.id}><div className="version-badge">v{version.number}</div><div className="version-info"><strong>{version.file.name}</strong><span>{new Date(version.submittedAt).toLocaleString('pt-BR')} · {formatSize(version.file.size)}</span><CheckChips checks={checkRicFile(version.file, expectedName, MAX_WORK_BYTES)} />{version.reviewNote && <p>{version.reviewNote}</p>}</div><StatusBadge status={version.status} /></article>) : <div className="empty-state"><span><FileText size={18} /></span><div><strong>Primeira versão ainda não enviada</strong><p>Selecione o arquivo da versão definitiva abaixo.</p></div></div>}</div>
         </section>
       </div>
       <aside className="student-upload-side"><section className="panel upload-panel"><div className="upload-panel-heading"><span><Upload size={17} /></span><div><h2>Enviar versão corrigida</h2><p>O orientador revisará o arquivo e registrará o aval.</p></div></div>
+          <div className="expected-name"><span>Nome exigido pela Portaria 4069/2024</span><code>{expectedName}</code><small>PDF/A, até 10 GB. Produto complementar vai em .zip com o mesmo padrão.</small><a className="inline-link" href="/amostras/dsm_2026_2_davirocha_paineldeindicadoresparacooperativas.pdf" download>Baixar PDF de amostra para testar</a></div>
           <FilePicker label="Selecionar arquivo" file={selectedFile} onSelect={setSelectedFile} />
+          {selectedFile && <CheckChips checks={checkRicFile(selectedFile, expectedName, MAX_WORK_BYTES)} />}
           {formError && <p className="form-error" role="alert">{formError}</p>}
           <button className="button button--primary upload-submit" onClick={submitVersion} disabled={!selectedFile}><ArrowUpRight size={16} /> Registrar versão definitiva</button>
-          <p className="upload-privacy">Arquivo e validação PDF/A não são enviados nem verificados nesta versão do protótipo.</p>
+          <p className="upload-privacy">A checagem roda no navegador e não bloqueia o envio; o orientador vê o mesmo resultado antes do aval.</p>
         </section>
         <section className="panel student-next-panel"><h2>Próxima etapa</h2><div className="next-step"><span><CalendarDays size={16} /></span><div><strong>Aval do orientador</strong><p>A versão enviada aparecerá na fila de revisão.</p></div></div><div className="next-step"><span><CheckCircle2 size={16} /></span><div><strong>Registro no histórico</strong><p>Versões anteriores mantêm seu estado próprio.</p></div></div></section>
       </aside>
