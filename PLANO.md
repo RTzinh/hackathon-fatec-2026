@@ -1,8 +1,8 @@
-# Plano do MVP SIG-Banca
+# Plano do MVP Integrae
 
 ## Objetivo
 
-Demonstrar, com cenário fictício compartilhado, o fluxo da agenda da banca ao depósito institucional. Este protótipo não declara regras acadêmicas não confirmadas nem realiza integração real.
+Demonstrar, com cenário fictício compartilhado, o fluxo da agenda da banca ao depósito institucional. Integrae é a proposta para o desafio SIG-Banca. Este protótipo não declara regras acadêmicas não confirmadas nem realiza integração real.
 
 ## Incrementos e estado
 

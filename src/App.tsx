@@ -112,7 +112,7 @@ export default function App() {
     setToast({ kind: 'success', message: 'Cenário inicial restaurado.' })
   }
 
-  if (!isReady) return <div className="loading-screen" role="status"><div className="brand-mark brand-mark--loading">S</div><span>Preparando a demonstração…</span></div>
+  if (!isReady) return <div className="loading-screen" role="status"><div className="brand-mark brand-mark--loading">I</div><span>Preparando a demonstração…</span></div>
   const pages = roleViews[currentProfile.role]
   const activePage = pages.find((item) => item.id === view) ?? roleViews[viewer.role][0]
   const props: PageProps = { state, setState, viewer, navigate, notify: setToast }
@@ -120,7 +120,7 @@ export default function App() {
   return <div className="app-shell">
     <a className="skip-link" href="#main-content">Pular para o conteúdo</a>
     <aside className={`sidebar ${mobileNavOpen ? 'sidebar--open' : ''}`} aria-label="Navegação principal">
-      <div className="brand-lockup"><div className="brand-mark">S</div><div><strong>SIG-Banca</strong><span>Fatec Bauru</span></div><button className="icon-button sidebar-close" aria-label="Fechar menu" onClick={() => setMobileNavOpen(false)}><X size={18} /></button></div>
+      <div className="brand-lockup"><div className="brand-mark">I</div><div><strong>Integrae</strong><span>Fatec Bauru</span></div><button className="icon-button sidebar-close" aria-label="Fechar menu" onClick={() => setMobileNavOpen(false)}><X size={18} /></button></div>
       <div className="demo-chip"><span className="demo-chip__pulse" />AMBIENTE DE DEMONSTRAÇÃO</div>
       <div className="nav-group-label">Jornada ativa</div>
       <nav className="side-nav">

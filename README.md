@@ -1,6 +1,6 @@
-# SIG-Banca
+# Integrae
 
-MVP navegável para o II Hackathon AMS Fatec Bauru/IBM. Dados e pessoas são fictícios. Protótipo demonstra o ciclo de uma banca; não substitui sistema institucional.
+MVP navegável do Integrae, proposta para o desafio SIG-Banca no II Hackathon AMS Fatec Bauru/IBM. Dados e pessoas são fictícios. Protótipo demonstra o ciclo de uma banca; não substitui sistema institucional.
 
 Roteiro escrito do pitch e guia de demonstração: [PITCH.md](./PITCH.md).
 

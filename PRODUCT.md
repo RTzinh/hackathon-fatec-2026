@@ -19,7 +19,7 @@ React, TypeScript, Vite; stack specified by the user.
 
 ## Product Purpose
 
-SIG-Banca centraliza o ciclo de uma banca de TCC, do agendamento ao aval do orientador e ao registro manual do depósito institucional. Sucesso na demonstração significa conseguir percorrer as quatro jornadas conectadas e entender a próxima ação e as pendências.
+Integrae centraliza o ciclo de uma banca de TCC, do agendamento ao aval do orientador e ao registro manual do depósito institucional. É a proposta da equipe para o desafio SIG-Banca. Sucesso na demonstração significa conseguir percorrer as quatro jornadas conectadas e entender a próxima ação e as pendências.
 
 ## Positioning
 
