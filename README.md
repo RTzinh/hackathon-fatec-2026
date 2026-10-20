@@ -2,6 +2,8 @@
 
 MVP navegável para o II Hackathon AMS Fatec Bauru/IBM. Dados e pessoas são fictícios. Protótipo demonstra o ciclo de uma banca; não substitui sistema institucional.
 
+Roteiro escrito do pitch e guia de demonstração: [PITCH.md](./PITCH.md).
+
 ## Rodar local
 
 Requisitos: Node.js 24+ e npm.
