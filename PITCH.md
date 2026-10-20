@@ -1,10 +1,10 @@
-# Apresentação do SIG-Banca
+# Apresentação do Integrae
 
-Roteiro de fala para o pitch do II Hackathon AMS Fatec Bauru/IBM. O tema não fixa duração; este texto foi pensado para aproximadamente 4 minutos, incluindo uma demonstração breve. Ajustar ao limite informado pela organização.
+Roteiro de fala do Integrae para o pitch do II Hackathon AMS Fatec Bauru/IBM, em resposta ao desafio SIG-Banca. O tema não fixa duração; este texto foi pensado para aproximadamente 4 minutos, incluindo uma demonstração breve. Ajustar ao limite informado pela organização.
 
 ## Título
 
-**SIG-Banca — da agenda ao depósito, com cada etapa visível.**
+**Integrae — da agenda ao depósito, com cada etapa visível.**
 
 ## Fala
 
@@ -12,7 +12,7 @@ Uma banca de TCC parece durar algumas horas. Mas o trabalho começa muito antes 
 
 Quando cada etapa fica em um lugar diferente, surgem cobranças manuais, documentos difíceis de localizar e dúvidas sobre o que ainda falta. Esse é o problema apresentado no tema do hackathon.
 
-Por isso criamos o SIG-Banca: um fluxo compartilhado para acompanhar o ciclo da banca do agendamento ao registro do depósito. Na demonstração, cada perfil mostra a etapa correspondente e a próxima ação necessária.
+Por isso criamos o Integrae: um fluxo compartilhado para acompanhar o ciclo da banca do agendamento ao registro do depósito. Na demonstração, cada perfil mostra a etapa correspondente e a próxima ação necessária.
 
 Vamos percorrer esse fluxo.
 
@@ -32,7 +32,7 @@ O protótipo usa dados fictícios e persiste o cenário no navegador. Selecionar
 
 Esse limite é deliberado: queremos mostrar o fluxo e suas responsabilidades sem afirmar que uma integração ou regra ainda não confirmada já funciona. A pesquisa disponível não encontrou uma API do RIC-CPS nem o regulamento local que esclareça todos os detalhes do prazo de correção. Por isso identificamos os 15 dias como premissa da demonstração, registramos os 90 dias como requisito a validar no processo e deixamos integrações para validação institucional.
 
-O resultado é um processo em que orientador, convidado, aluno e coordenação acompanham a mesma jornada. O SIG-Banca não para no agendamento: mostra o que aconteceu, o que falta e quem precisa agir para o trabalho seguir até o depósito.
+O resultado é um processo em que orientador, convidado, aluno e coordenação acompanham a mesma jornada. O Integrae não para no agendamento: mostra o que aconteceu, o que falta e quem precisa agir para o trabalho seguir até o depósito.
 
 ## Guia rápido da demonstração
 
