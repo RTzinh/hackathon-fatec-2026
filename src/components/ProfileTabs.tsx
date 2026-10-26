@@ -16,6 +16,6 @@ export function ProfileTabs({ profiles, value, onChange }: { profiles: DemoProfi
         return <button key={profile.id} type="button" className="profile-tabs__item" data-profile={profile.id} aria-pressed={profile.id === value} title={`${profile.label} · ${profile.name}`} onClick={() => onChange(profile.id)}><Icon size={15} aria-hidden="true" /><span>{profile.label}</span></button>
       })}
     </div>
-    <select id="profile-selector" className="profile-tabs__select" aria-label="Ver como" value={value} onChange={(event) => onChange(event.target.value)}>{profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.label} · {profile.name}</option>)}</select>
+    <select id="profile-selector" className="profile-tabs__select" aria-label="Ver como" value={value} onChange={(event) => onChange(event.target.value)}>{profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.label}</option>)}</select>
   </div>
 }

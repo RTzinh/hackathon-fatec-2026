@@ -48,11 +48,9 @@ Outros comandos:
 |---|---|
 | `npm run build` | Confere os tipos e gera a versão de produção. |
 | `npm run test:rules` | Testa as regras de prazo, conflito, token, nome de arquivo, PDF/A e texto integral. |
-| `npm run test:ai` | Testa, sem rede, a leitura e a validação das respostas da IA. |
+| `npm run test:tutorial` | Testa, sem navegador, o posicionamento do balão do tour e o registro de perfis já vistos. |
 | `npm run lint` | Verifica o código. |
 | `npm run preview` | Serve a versão gerada pelo build. |
-
-`TODO` o teste do tour (`scripts/tutorial.test.mjs`) ainda não tem script no `package.json`. Sugestão: `"test:tutorial": "node --experimental-strip-types --test scripts/tutorial.test.mjs"`.
 
 Se a rede passa por um proxy que inspeciona TLS (comum em escolas e empresas), a IA mostra "A IA está indisponível" e o terminal exibe `SELF_SIGNED_CERT_IN_CHAIN`. Inicie com os certificados do sistema: `$env:NODE_USE_SYSTEM_CA = '1'; npm run dev` no PowerShell, ou `NODE_USE_SYSTEM_CA=1 npm run dev`. Não desligue a verificação TLS.
 
@@ -93,8 +91,6 @@ Ao abrir uma aba nova, o Integrae mostra uma tela de **Entrar** de demonstraçã
 ---
 
 ## 3. Tour guiado e página "Como usar"
-
-`TODO` esta seção descreve os componentes entregues (`Tour`, `HelpPage`). Confirme que o item **Como usar** apareceu no menu depois da integração no `App.tsx`.
 
 **Tour guiado.** Na primeira vez que alguém entra num perfil, aparece um cartão discreto no canto da tela com os botões **Ver tour de N passos** e **Agora não**. Ele não bloqueia nada. O tour tem de 3 a 4 passos curtos por perfil, destaca um elemento da tela e leva ao próximo passo com **Próximo** (e **Anterior**, **Concluir**). **Pular tour** fecha em qualquer ponto. Os passos cobrem a próxima ação do perfil e explicam o botão **Desfazer** dos avisos. O navegador lembra quais perfis já viram o tour.
 
@@ -247,7 +243,6 @@ O que é conferido:
 - **Termo de Autorização**: presença dos campos do Anexo C (identificação, defesa, nota e indicação, acesso, fomento, declaração de correções e assinaturas), coerência da nota e da indicação com o cadastro, regra do texto integral (Art. 14) e nome do arquivo.
 - O **nome do arquivo** é comparado de forma exata no servidor, **sem IA**.
 
-`TODO` conferir: os nomes dos botões e das seções da revisão de conformidade foram lidos de `src/components/ComplianceReview.tsx`. Essa função foi integrada por outro agente em 20/10/2026; confira se os rótulos continuam iguais e onde ela aparece na tela.
 
 ### 6.3 Como funciona por dentro
 
@@ -297,7 +292,6 @@ Antes de começar, use **Restaurar cenário inicial**. Os PDFs de amostra estão
 
 Dica para o tempo curto: mantenha uma aba por perfil (**Abrir os 4 perfis em abas**) e alterne entre elas. As mudanças aparecem em todas.
 
-`TODO` o `README.md` ainda lista seis perfis e um passo do Bibliotecário no roteiro. Alinhe o README a este roteiro de quatro perfis.
 
 ---
 
@@ -362,5 +356,4 @@ Não. Mostra apenas dados acadêmicos e os avaliadores que aceitaram o convite.
 - [ ] Script `test:tutorial` no `package.json`.
 - [ ] Rótulos e posição da **revisão de conformidade com IA** (seção 6.2), integrada por outro agente.
 - [ ] Texto sobre quem registra a submissão no RIC-CPS (seções 4.4 e 9).
-- [ ] `README.md` e `PITCH.md` ainda citam seis perfis e o Bibliotecário.
 - [ ] Textos do tour que citam botões (Registrar submissão, Confirmar assinatura, Registrar versão definitiva, Depósito RIC-CPS) se os rótulos mudarem.
