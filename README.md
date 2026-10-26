@@ -6,7 +6,7 @@ Roteiro escrito do pitch e guia de demonstração: [PITCH.md](./PITCH.md).
 
 ## Rodar local
 
-Requisitos: Node.js 24+ e npm.
+Requisitos: Node.js 24+ e npm
 
 ```powershell
 npm install
